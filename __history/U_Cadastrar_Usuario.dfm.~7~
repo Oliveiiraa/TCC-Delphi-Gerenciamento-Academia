@@ -1,0 +1,129 @@
+object frm_cadasusu: Tfrm_cadasusu
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Cadastrar Usu'#225'rio'
+  ClientHeight = 219
+  ClientWidth = 292
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_login: TLabel
+    Left = 28
+    Top = 56
+    Width = 32
+    Height = 13
+    Caption = 'Login :'
+  end
+  object lbl_senhalogin: TLabel
+    Left = 28
+    Top = 99
+    Width = 37
+    Height = 13
+    Caption = 'Senha :'
+  end
+  object lbl_tipousu: TLabel
+    Left = 28
+    Top = 144
+    Width = 78
+    Height = 13
+    Caption = 'Tipo de Usu'#225'rio:'
+  end
+  object edt_login: TEdit
+    Left = 71
+    Top = 48
+    Width = 194
+    Height = 21
+    TabOrder = 0
+  end
+  object edt_senhalogin: TEdit
+    Left = 71
+    Top = 96
+    Width = 194
+    Height = 21
+    PasswordChar = '*'
+    TabOrder = 1
+  end
+  object bnt_salvarlogin: TButton
+    Left = 28
+    Top = 180
+    Width = 103
+    Height = 25
+    Caption = 'Salvar Login'
+    TabOrder = 3
+    OnClick = bnt_salvarloginClick
+  end
+  object bnt_cancelarlogin: TButton
+    Left = 160
+    Top = 180
+    Width = 105
+    Height = 25
+    Caption = 'Cancelar '
+    TabOrder = 4
+    OnClick = bnt_cancelarloginClick
+  end
+  object ComboBoxTipoUsu: TComboBox
+    Left = 120
+    Top = 141
+    Width = 145
+    Height = 21
+    TabOrder = 2
+    Items.Strings = (
+      'Comum'
+      'Administrador')
+  end
+  object ADOConnectionCadasusu: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=TCC;Data Source=(local);Use Procedure f' +
+      'or Prepare=1;Auto Translate=True;Packet Size=4096;Workstation ID' +
+      '=BP743033;Use Encryption for Data=False;Tag with column collatio' +
+      'n when possible=False'
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 240
+    Top = 8
+  end
+  object ADOStoredProc1: TADOStoredProc
+    Connection = ADOConnectionCadasusu
+    ProcedureName = 'SP_CADASUSU;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+        Value = 0
+      end
+      item
+        Name = '@LG_USU'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 30
+        Value = '0'
+      end
+      item
+        Name = '@SN_USU'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 15
+        Value = '0'
+      end
+      item
+        Name = '@TP_USU'
+        Attributes = [paNullable]
+        DataType = ftBoolean
+        Value = False
+      end>
+    Left = 48
+    Top = 8
+  end
+end

@@ -1,0 +1,81 @@
+unit U_Aniversariantes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Grids, DBGrids, DB, ADODB, pngimage, ExtCtrls;
+
+type
+  Tfrm_aniversariantes = class(TForm)
+    ADOQueryAniversariantes: TADOQuery;
+    DataSourceAniversariantes: TDataSource;
+    ADOConnectionAniversariantes: TADOConnection;
+    DBGrid1: TDBGrid;
+    ADOQueryAniversariantesCOD_CLI: TAutoIncField;
+    ADOQueryAniversariantesNM_CLI: TStringField;
+    ADOQueryAniversariantesEND_CLI: TStringField;
+    ADOQueryAniversariantesCPF_CLI: TStringField;
+    ADOQueryAniversariantesRG_CLI: TStringField;
+    ADOQueryAniversariantesTEL_CLI: TStringField;
+    ADOQueryAniversariantesDTMATRI_CLI: TWideStringField;
+    ADOQueryAniversariantesDTNASC_CLI: TWideStringField;
+    ADOQueryAniversariantesEML_CLI: TStringField;
+    ADOQueryAniversariantesSTA_CLI: TBooleanField;
+    ADOQueryAniversariantesSX_CLI: TBooleanField;
+    ADOQueryAniversariantesFT_CLI: TStringField;
+    ADOQueryAniversariantesTPT_CLI: TBooleanField;
+    ADOQueryAniversariantesCOD_USU: TIntegerField;
+    Image1: TImage;
+    procedure FormShow(Sender: TObject);
+    procedure ADOQueryAniversariantesSTA_CLIGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure ADOQueryAniversariantesSX_CLIGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_aniversariantes: Tfrm_aniversariantes;
+
+implementation
+
+{$R *.dfm}
+
+procedure Tfrm_aniversariantes.ADOQueryAniversariantesSTA_CLIGetText(
+  Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+  begin
+  if Sender.AsString = 'False' then
+       Text := 'Ativo'
+    else
+       if Sender.AsString = 'True' then
+          Text := 'Inativo'
+  end;
+end;
+
+procedure Tfrm_aniversariantes.ADOQueryAniversariantesSX_CLIGetText(
+  Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+  begin
+    if Sender.AsString = 'False' then
+       Text := 'Masculino'
+    else
+       if Sender.AsString = 'True' then
+          Text := 'Feminino'
+       else
+          Text := 'Indefinido';
+  end;
+end;
+
+procedure Tfrm_aniversariantes.FormShow(Sender: TObject);
+begin
+   U_Aniversariantes.frm_aniversariantes.ADOQueryAniversariantes.Close;
+    U_Aniversariantes.frm_aniversariantes.ADOQueryAniversariantes.Open;
+    U_Aniversariantes.frm_aniversariantes.ADOQueryAniversariantes.Refresh;
+end;
+
+end.

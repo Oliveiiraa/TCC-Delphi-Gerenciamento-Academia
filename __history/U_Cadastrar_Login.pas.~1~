@@ -1,0 +1,33 @@
+unit U_Cadastrar_Login;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls;
+
+type
+  TForm1 = class(TForm)
+    lbl_nomelogin: TLabel;
+    lbl_login: TLabel;
+    lbl_senhalogin: TLabel;
+    edt_nomelogin: TEdit;
+    edt_login: TEdit;
+    edt_senhalogin: TEdit;
+    bnt_salvarlogin: TButton;
+    bnt_cancelarlogin: TButton;
+    rdg_tipousuario: TRadioGroup;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+end.

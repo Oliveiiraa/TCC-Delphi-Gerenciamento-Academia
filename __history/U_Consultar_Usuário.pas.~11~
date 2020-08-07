@@ -1,0 +1,216 @@
+unit U_Consultar_Usuário;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Grids, DBGrids, DB, ADODB, Clipbrd, pngimage, ExtCtrls;
+
+type
+  Tfrm_consultusuario = class(TForm)
+    DataSourceConsultUsu: TDataSource;
+    ADOConnectionConsultUsu: TADOConnection;
+    ADOQueryConsultUsu: TADOQuery;
+    DBGrid1: TDBGrid;
+    Memo1: TMemo;
+    ADOQueryConsultUsuCOD_USU: TAutoIncField;
+    ADOQueryConsultUsuLG_USU: TStringField;
+    ADOQueryConsultUsuSN_USU: TStringField;
+    ADOQueryConsultUsuTP_USU: TBooleanField;
+    edt_buscar: TEdit;
+    btn_buscar: TButton;
+    ComboBoxConsultUsu: TComboBox;
+    Image1: TImage;
+    Image6: TImage;
+    Image2: TImage;
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure ADOQueryConsultUsuTP_USUGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure btn_buscarClick(Sender: TObject);
+    procedure btn_excluirClick(Sender: TObject);
+    procedure bnt_cancelarconsultausuClick(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure edt_buscarChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_consultusuario: Tfrm_consultusuario;
+
+implementation
+
+{$R *.dfm}
+
+procedure Tfrm_consultusuario.ADOQueryConsultUsuTP_USUGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  begin
+    if Sender.AsString = 'False' then
+       Text := 'Administrador'
+    else
+      Text := 'Usuário Comum'
+  end;
+end;
+
+procedure Tfrm_consultusuario.bnt_cancelarconsultausuClick(Sender: TObject);
+begin
+ close;
+end;
+
+procedure Tfrm_consultusuario.btn_buscarClick(Sender: TObject);
+begin
+  case ComboBoxConsultUsu.ItemIndex of
+  0: with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where COD_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end;
+   1:with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where LG_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end;
+    2:with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where TP_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end
+  end;
+end;
+
+procedure Tfrm_consultusuario.btn_excluirClick(Sender: TObject);
+begin
+  ADOQueryConsultUsu.Delete;
+end;
+
+procedure Tfrm_consultusuario.DBGrid1CellClick(Column: TColumn);
+begin
+  Memo1.Text := Memo1.Text + ' ' + IntToStr(ADOQueryConsultUsuCOD_USU.AsInteger);
+
+  Memo1.Text := Memo1.Text + ' ' + ADOQueryConsultUsuLG_USU.AsString;
+
+  Memo1.Text := Memo1.Text + ' ' + ADOQueryConsultUsuSN_USU.AsString;
+
+  if ADOQueryConsultUsuTP_USU.AsBoolean = False then
+  begin
+    Memo1.Text := Memo1.Text + ' ' + 'Administrador';
+  end
+
+  else
+  begin
+    Memo1.Text := Memo1.Text + ' ' + 'Usuário Comum';
+  end;
+end;
+
+procedure Tfrm_consultusuario.edt_buscarChange(Sender: TObject);
+begin
+   case ComboBoxConsultUsu.ItemIndex of
+  0: with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where COD_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end;
+   1:with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where LG_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end;
+    2:with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where TP_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end
+  end;
+end;
+
+procedure Tfrm_consultusuario.Image2Click(Sender: TObject);
+begin
+  case ComboBoxConsultUsu.ItemIndex of
+  0: with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where COD_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end;
+   1:with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where LG_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end;
+    2:with ADOQueryConsultUsu do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from TB_USUARIOS                                           ');
+    sql.Add('Where TP_USU LIKE ''%' +  edt_buscar.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultUsu.SQL.Text;
+    Open;
+    Active := True;
+    end
+  end;
+end;
+
+procedure Tfrm_consultusuario.Image3Click(Sender: TObject);
+begin
+ close;
+end;
+
+procedure Tfrm_consultusuario.Image6Click(Sender: TObject);
+begin
+close;
+end;
+
+end.

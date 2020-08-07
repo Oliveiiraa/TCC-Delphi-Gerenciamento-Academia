@@ -1,0 +1,15 @@
+
+//antes de excluir tem que ter esse if
+
+  if ADOQueryUsuarioQTD_ADMIN.RecordCount < 2 then
+  begin
+    ShowMessage('tem que ter pelo menos 1 admin');
+  end;
+
+
+
+no modo visual, na propriedade SQL do ADOQuery1, colocar a seguinte consulta (que é bem simples)
+
+select  *
+from    tb_usuario 
+where   tipo = 0

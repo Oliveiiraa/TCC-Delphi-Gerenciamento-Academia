@@ -1,0 +1,189 @@
+unit U_Cadastrar_Mensalidades;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ADODB, StdCtrls, dblookup, Mask, pngimage, ExtCtrls;
+
+type
+  Tfrm_cadasmensalidades = class(TForm)
+    lbl_datavenc: TLabel;
+    ADOConnectionCadasMensa: TADOConnection;
+    ADOStoredProcCadasMensa: TADOStoredProc;
+    ADOQueryCadasMensa: TADOQuery;
+    lbl_nmcli: TLabel;
+    btn_cadasmensa: TButton;
+    btn_limpar: TButton;
+    edt_nmcli: TEdit;
+    edt_codcli: TEdit;
+    MaskEditDataVenc: TMaskEdit;
+    lbl_valor: TLabel;
+    Label1: TLabel;
+    MaskEditDataPag: TMaskEdit;
+    Image1: TImage;
+    Image2: TImage;
+    Image3: TImage;
+    Image6: TImage;
+    ADOQueryCadasMensaCOD_CLI: TAutoIncField;
+    ADOQueryCadasMensaNM_CLI: TStringField;
+    ADOQueryCadasMensaEND_CLI: TStringField;
+    ADOQueryCadasMensaCPF_CLI: TStringField;
+    ADOQueryCadasMensaRG_CLI: TStringField;
+    ADOQueryCadasMensaTEL_CLI: TStringField;
+    ADOQueryCadasMensaDTMATRI_CLI: TWideStringField;
+    ADOQueryCadasMensaDTNASC_CLI: TWideStringField;
+    ADOQueryCadasMensaEML_CLI: TStringField;
+    ADOQueryCadasMensaSTA_CLI: TBooleanField;
+    ADOQueryCadasMensaSX_CLI: TStringField;
+    ADOQueryCadasMensaFT_CLI: TStringField;
+    ADOQueryCadasMensaTPT_CLI: TStringField;
+    ADOQueryCadasMensaCOD_USU: TIntegerField;
+    Image4: TImage;
+    edt_valor: TEdit;
+    procedure FormShow(Sender: TObject);
+    procedure btn_limparClick(Sender: TObject);
+    procedure btn_cadasmensaClick(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_cadasmensalidades: Tfrm_cadasmensalidades;
+
+implementation
+
+uses U_Consultar_Mensalidades, U_Cadastrar_Medidas, U_Cadastrar_Cliente;
+
+{$R *.dfm}
+
+procedure Tfrm_cadasmensalidades.btn_cadasmensaClick(Sender: TObject);
+VAR
+ano1,mes1,dia1,ano2,mes2,dia2 : string;
+begin
+   if MaskEditDataVenc.Text = EmptyStr then
+  begin
+   MessageDlg('Preencha a Data de Vencimento !',mtError,[mbOK],0);
+  end;
+
+  try
+    begin
+      dia2 := Copy(MaskEditDataPag.Text,1,2);
+      mes2 := Copy(MaskEditDataPag.Text,4,2);
+      ano2 := Copy(MaskEditDataPag.Text,7,4);
+      ADOStoredProcCadasMensa.Parameters[1].Value := ano2 + '/' + mes2 + '/' + dia2;
+      dia1 := Copy(MaskEditDataVenc.Text,1,2);
+      mes1 := Copy(MaskEditDataVenc.Text,4,2);
+      ano1 := Copy(MaskEditDataVenc.Text,7,4);
+      ADOStoredProcCadasMensa.Parameters[2].Value := ano1 + '/' + mes1 + '/' + dia1;
+      ADOStoredProcCadasMensa.Parameters[3].Value := edt_valor.Text;
+      ADOStoredProcCadasMensa.Parameters[4].Value := edt_codcli.Text;
+      //ADOStoredProcCadasMensa.Parameters[6].Value :=
+
+      ADOStoredProcCadasMensa.ExecProc;
+
+      U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Close;
+      U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Open;
+      U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Refresh;
+
+      MessageDlg('Mensalidade Cadastrada com Sucesso!',mtInformation,[mbOK],0);
+
+    edt_nmcli.Clear;
+    MaskEditDataVenc.Clear;
+    MaskEditDataPag.Clear;
+    edt_codcli.Clear;
+    edt_valor.Clear;
+    frm_cadasmensalidades.Close;
+
+    end;
+  finally
+
+  end;
+end;
+
+procedure Tfrm_cadasmensalidades.btn_limparClick(Sender: TObject);
+begin
+  edt_nmcli.Clear;
+  MaskEditDataVenc.Clear;
+  MaskEditDataPag.Clear;
+  edt_valor.Clear;
+end;
+
+procedure Tfrm_cadasmensalidades.FormShow(Sender: TObject);
+begin
+ // with ADOQuery1 do
+//begin
+  // close;
+  // sql.clear;
+  // sql.add (' select * from TB_CLIENTES '); //use o comando ai cfe seu dataset
+   //veja se vai impor alguma condição então use o where
+  // open;
+   //depois de selecionado jogue no combobox os valores
+  // disablecontrols; //desabilita os controle para ir mais rapido
+  // ComboBox1.items.clear; //limpa o componente para receber os dados
+  // first;
+  // while eof = false do
+  // begin
+    //  ComboBox1.items.add(DataSource1.DataSet.fieldbyname('NM_CLI').asstring);
+    //  next;
+   // end;
+   // enablecontrols; //habilita novamente os controles
+// end;
+
+    edt_nmcli.Text := U_Cadastrar_Cliente.frm_cadastrarcli.edt_nomecli.Text;
+
+    edt_codcli.Text :=  U_Cadastrar_Cliente.frm_cadastrarcli.ADOQueryCadascliCOD_CLI.AsString;
+end;
+
+procedure Tfrm_cadasmensalidades.Image3Click(Sender: TObject);
+VAR
+ano1,mes1,dia1,ano2,mes2,dia2 : string;
+begin
+    if MaskEditDataVenc.Text = EmptyStr then
+  begin
+   MessageDlg('Preencha a Data de Vencimento !',mtError,[mbOK],0);
+  end;
+
+  try
+    begin
+      dia2 := Copy(MaskEditDataPag.Text,1,2);
+      mes2 := Copy(MaskEditDataPag.Text,4,2);
+      ano2 := Copy(MaskEditDataPag.Text,7,4);
+      ADOStoredProcCadasMensa.Parameters[1].Value := ano2 + '/' + mes2 + '/' + dia2;
+      dia1 := Copy(MaskEditDataVenc.Text,1,2);
+      mes1 := Copy(MaskEditDataVenc.Text,4,2);
+      ano1 := Copy(MaskEditDataVenc.Text,7,4);
+      ADOStoredProcCadasMensa.Parameters[2].Value := ano1 + '/' + mes1 + '/' + dia1;
+      ADOStoredProcCadasMensa.Parameters[3].Value := edt_valor.text;
+      ADOStoredProcCadasMensa.Parameters[4].Value := edt_codcli.Text;
+      //ADOStoredProcCadasMensa.Parameters[6].Value :=
+
+      ADOStoredProcCadasMensa.ExecProc;
+
+      U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Close;
+      U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Open;
+      U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Refresh;
+
+      MessageDlg('Mensalidade Cadastrada com Sucesso!',mtInformation,[mbOK],0);
+
+    edt_nmcli.Clear;
+    MaskEditDataVenc.Clear;
+    edt_valor.clear;
+    frm_cadasmensalidades.Close;
+
+    end;
+  finally
+
+  end;
+end;
+
+procedure Tfrm_cadasmensalidades.Image6Click(Sender: TObject);
+begin
+close;
+end;
+
+end.

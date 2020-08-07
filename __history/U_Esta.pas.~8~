@@ -1,0 +1,259 @@
+unit U_Esta;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, DB, ADODB, Grids, DBGrids, Clipbrd, pngimage, ExtCtrls;
+
+type
+  Tfrm_esta = class(TForm)
+    Edit_totalalunos: TEdit;
+    Edit_alunosativos: TEdit;
+    Edit_alunosinativos: TEdit;
+    Edit_ganho: TEdit;
+    Edit_despesas: TEdit;
+    ADOConnection1: TADOConnection;
+    ADOQueryResulTotalCli: TADOQuery;
+    DataSource1: TDataSource;
+    Label_lucro: TLabel;
+    lbl_totalalunos: TLabel;
+    Label_alunosativos: TLabel;
+    Label_alunosinativos: TLabel;
+    Label_ganho: TLabel;
+    Label_despesas: TLabel;
+    ADOQueryresulTotalCliINa: TADOQuery;
+    ADOQueryresulTotalCliATIVO: TADOQuery;
+    ADOQueryTotalganho: TADOQuery;
+    ADOQueryTotaldespesas: TADOQuery;
+    ADOQueryTotalLucro: TADOQuery;
+    Edit_lucro: TEdit;
+    ADOQueryResulTotalCliQTD: TIntegerField;
+    ADOQueryresulTotalCliATIVOQTDA: TIntegerField;
+    ADOQueryresulTotalCliINaQTDI: TIntegerField;
+    ADOQueryTotaldespesastotald: TBCDField;
+    ADOQueryTotalganhototal: TBCDField;
+    Image1: TImage;
+    Image2: TImage;
+    Image6: TImage;
+    procedure FormShow(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Edit_lucroChange(Sender: TObject);
+    procedure Edit_lucroClick(Sender: TObject);
+    procedure Edit_despesasClick(Sender: TObject);
+    procedure Edit_despesasChange(Sender: TObject);
+    procedure Edit_ganhoChange(Sender: TObject);
+    procedure Edit_ganhoClick(Sender: TObject);
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_esta: Tfrm_esta;
+
+implementation
+
+{$R *.dfm}
+
+
+
+
+
+procedure Tfrm_esta.Edit_despesasChange(Sender: TObject);
+var
+  s : string;
+  v : double;
+  I : integer;
+begin
+  {//1º Passo : se o edit estiver vazio, nada pode ser feito.
+    If (Edit_despesas.Text = emptystr) then
+      Begin
+        Edit_despesas.Text := '0,00';
+        Exit;
+      End;
+    //2º Passo : obter o texto do edit, SEM a virgula e SEM o ponto decimal:
+    s := '';
+    for I := 1 to length(Edit_despesas.Text) do
+        if (Edit_despesas.text[I] in ['0'..'9']) then
+            s := s + Edit_despesas.text[I];
+
+            //3º Passo : fazer com que o conteúdo do edit apresente 2 casas decimais:
+            v := strtofloat(s);
+            v := (v /100); // para criar 2 casa decimais
+
+            //4º Passo : Formata o valor de (V) para aceitar valores do tipo 0,10.
+            Edit_despesas.text := FormatFloat('#####0.00',v);
+            Edit_despesas.SelStart := Length(Edit_despesas.text) ; }
+end;
+
+procedure Tfrm_esta.Edit_despesasClick(Sender: TObject);
+begin
+  {Edit_despesas.SelStart := Length(Edit_despesas.text); }
+end;
+
+procedure Tfrm_esta.Edit_ganhoChange(Sender: TObject);
+var
+  s : string;
+  v : double;
+  I : integer;
+begin
+  {//1º Passo : se o edit estiver vazio, nada pode ser feito.
+    If (Edit_ganho.Text = emptystr) then
+      Begin
+        Edit_ganho.Text := '0,00';
+        Exit;
+      End;
+    //2º Passo : obter o texto do edit, SEM a virgula e SEM o ponto decimal:
+    s := '';
+    for I := 1 to length(Edit_ganho.Text) do
+        if (Edit_ganho.text[I] in ['0'..'9']) then
+            s := s + Edit_ganho.text[I];
+
+            //3º Passo : fazer com que o conteúdo do edit apresente 2 casas decimais:
+            v := strtofloat(s);
+            v := (v /100); // para criar 2 casa decimais
+
+            //4º Passo : Formata o valor de (V) para aceitar valores do tipo 0,10.
+            Edit_ganho.text := FormatFloat('#####0.00',v);
+            Edit_ganho.SelStart := Length(Edit_ganho.text) ; }
+end;
+
+procedure Tfrm_esta.Edit_ganhoClick(Sender: TObject);
+begin
+  {Edit_ganho.SelStart := Length(Edit_ganho.text); }
+end;
+
+procedure Tfrm_esta.Edit_lucroChange(Sender: TObject);
+var
+  s : string;
+  v : double;
+  I : integer;
+begin
+  {//1º Passo : se o edit estiver vazio, nada pode ser feito.
+    If (Edit_lucro.Text = emptystr) then
+      Begin
+        Edit_lucro.Text := '0,00';
+        Exit;
+      End;
+    //2º Passo : obter o texto do edit, SEM a virgula e SEM o ponto decimal:
+    s := '';
+    for I := 1 to length(Edit_lucro.Text) do
+        if (Edit_lucro.text[I] in ['0'..'9']) then
+            s := s + Edit_lucro.text[I];
+
+            //3º Passo : fazer com que o conteúdo do edit apresente 2 casas decimais:
+            v := strtofloat(s);
+            v := (v /100); // para criar 2 casa decimais
+
+            //4º Passo : Formata o valor de (V) para aceitar valores do tipo 0,10.
+            Edit_lucro.text := FormatFloat('#####0.00',v);
+            Edit_lucro.SelStart := Length(Edit_lucro.text) ;   }
+end;
+
+procedure Tfrm_esta.Edit_lucroClick(Sender: TObject);
+begin
+ { Edit_lucro.SelStart := Length(Edit_lucro.text);             }
+end;
+
+procedure Tfrm_esta.FormShow(Sender: TObject);
+ var
+   mes_corrente : string;
+   ////resultado : real;
+   ///
+   result : real;
+   mensa,desp : real;
+  //showmessage(DateToStr(Date));
+  begin //mes_corrente := copy(4,2,DateToStr(Date));
+   with ADOQueryResulTotalCli do
+   begin
+     Close;
+     SQL.Clear;
+     SQL.Add('select count (*) [QTD]');
+     SQL.Add('from          TB_CLIENTES');
+     ///////////////////////////////////////////////SQL.Add('where data='+ mes_corrente+'');
+     Clipboard.AsText := ADOQueryResulTotalCli.SQL.Text;
+     Open;
+   end;
+
+
+    Edit_totalalunos.text := IntToStr(ADOQueryResulTotalCliQTD.AsInteger);
+
+    with ADOQueryresulTotalCliATIVO do
+   begin
+     Close;
+     SQL.Clear;
+     SQL.Add('select count (*)  [QTDA] ');
+     SQL.Add('from          TB_CLIENTES');
+     SQL.Add('where         STA_CLI = 0 ');
+     ///////////////////////////////////////////////SQL.Add('where data='+ mes_corrente+'');
+     Clipboard.AsText := ADOQueryresulTotalCliATIVO.SQL.Text;
+     Open;
+   end;
+    Edit_alunosativos.text := IntToStr(ADOQueryresulTotalCliATIVOQTDA.AsInteger);
+
+
+
+      with ADOQueryresulTotalCliINa do
+   begin
+     Close;
+     SQL.Clear;
+     SQL.Add('select count (*)  [QTDI] ');
+     SQL.Add('from          TB_CLIENTES');
+      SQL.Add('where        STA_CLI = 1 ');
+     ///////////////////////////////////////////////SQL.Add('where data='+ mes_corrente+'');
+     Clipboard.AsText := ADOQueryresulTotalCliINa.SQL.Text;
+     Open;
+   end;
+    Edit_alunosinativos.text := IntToStr(ADOQueryresulTotalCliINaQTDI.AsInteger);
+
+               with ADOQueryTotaldespesas do
+   begin
+     Close;
+     SQL.Clear;
+     SQL.Add('select SUM(VL_DPS) [totald] ');
+     SQL.Add('from TB_DESPESAS');
+     SQL.Add('where  MONTH( DT_DPS) = MONTH(GETDATE())  AND');
+     SQL.Add('YEAR( DT_DPS) = YEAR(GETDATE())');
+     ///////////////////////////////////////////////SQL.Add('where data='+ mes_corrente+'');
+     Clipboard.AsText := ADOQueryTotaldespesas.SQL.Text;
+     Open;
+   end;
+    Edit_despesas.text := FloatToStr(ADOQueryTotaldespesastotald.AsFloat);
+
+           with ADOQueryTotalganho do
+   begin
+     Close;
+     SQL.Clear;
+     SQL.Add('select SUM(VL_MSD) [total] ');
+     SQL.Add('from TB_MENSALIDADES');
+     SQL.Add('where  MONTH( DTPAG_MSD) = MONTH(GETDATE()) AND ');
+     SQL.Add('year( DTPAG_MSD) = year(GETDATE())  ');
+     ///////////////////////////////////////////////SQL.Add('where data='+ mes_corrente+'');
+     Clipboard.AsText := ADOQueryTotalganho.SQL.Text;
+     Open;
+   end;
+    Edit_ganho.text := FloatToStr(ADOQueryTotalganhototal.AsFloat);
+
+
+    mensa := StrToFloat(Edit_ganho.Text);
+    desp := StrToFloat(Edit_despesas.Text);
+    result := mensa - desp;
+    Edit_lucro.Text := FloatToStr(result);
+
+ //Edit1.Text := FloatToStr(ADOQueryResulTotalClitotal do periodo.ASFLOAT - ADOQueryResulxxxxxxxOUTRO_TOTAL.ASFLOAT);
+ ///resultado := ADOQueryResulTotalClitotal do periodo.ASFLOAT - ADOQueryResulxxxxxxxOUTRO_TOTAL.ASFLOAT;
+
+
+
+end;
+
+procedure Tfrm_esta.Image6Click(Sender: TObject);
+begin
+ close;
+end;
+
+end.

@@ -1,0 +1,86 @@
+unit U_Cadastrar_Usuario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, DB, ADODB;
+
+type
+  Tfrm_cadasusu = class(TForm)
+    lbl_login: TLabel;
+    lbl_senhalogin: TLabel;
+    edt_login: TEdit;
+    edt_senhalogin: TEdit;
+    bnt_salvarlogin: TButton;
+    bnt_cancelarlogin: TButton;
+    ADOConnectionCadasusu: TADOConnection;
+    ADOStoredProc1: TADOStoredProc;
+    ComboBoxTipoUsu: TComboBox;
+    lbl_tipousu: TLabel;
+    procedure bnt_cancelarloginClick(Sender: TObject);
+    procedure bnt_salvarloginClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_cadasusu: Tfrm_cadasusu;
+
+implementation
+
+uses U_Cadastrar, U_Consultar_Usuário, U_Login_Sistema;
+
+{$R *.dfm}
+
+procedure Tfrm_cadasusu.bnt_cancelarloginClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure Tfrm_cadasusu.bnt_salvarloginClick(Sender: TObject);
+begin
+  if edt_login.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o login !',mtError,[mbOK],0);
+    edt_login.SetFocus;
+  end
+
+  else if edt_senhalogin.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com a senha !',mtError,[mbOK],0);
+    edt_senhalogin.SetFocus;
+  end;
+
+  try
+    begin
+      ADOStoredProc1.Parameters[1].Value := edt_login.Text;
+      ADOStoredProc1.Parameters[2].Value := edt_senhalogin.Text;
+      ADOStoredProc1.Parameters[3].Value := ComboBoxTipoUsu.ItemIndex;
+
+      ADOStoredProc1.ExecProc;
+
+      MessageDlg('Usuário Cadastrado Com Sucesso !',mtInformation,[mbOK],0);
+
+      frm_consultusuario.ADOQueryConsultUsu.Close;
+      frm_consultusuario.ADOQueryConsultUsu.Open;
+      frm_consultusuario.ADOQueryConsultUsu.Refresh;
+      frm_loginsistema.ADOQueryLogin.Close;
+      frm_loginsistema.ADOQueryLogin.Open;
+      frm_loginsistema.ADOQueryLogin.Refresh;
+
+      edt_login.Clear;
+      edt_senhalogin.Clear;
+      ComboBoxTipoUsu.ItemIndex := -1;
+
+      frm_cadasusu.Close;
+
+    end;
+  finally
+
+  end;
+end;
+
+end.

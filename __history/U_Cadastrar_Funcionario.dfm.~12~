@@ -1,0 +1,310 @@
+object frm_cadasfunc: Tfrm_cadasfunc
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Cadastrar Funcion'#225'rio'
+  ClientHeight = 434
+  ClientWidth = 763
+  Color = clHighlight
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_nomefunc: TLabel
+    Left = 27
+    Top = 75
+    Width = 34
+    Height = 13
+    Caption = 'Nome :'
+  end
+  object lbl_enderecofunc: TLabel
+    Left = 27
+    Top = 123
+    Width = 52
+    Height = 13
+    Caption = 'Endere'#231'o :'
+  end
+  object lbl_cpffunc: TLabel
+    Left = 27
+    Top = 171
+    Width = 26
+    Height = 13
+    Caption = 'CPF :'
+  end
+  object lbl_rgfunc: TLabel
+    Left = 280
+    Top = 171
+    Width = 21
+    Height = 13
+    Caption = 'RG :'
+  end
+  object lbl_telefonefunc: TLabel
+    Left = 27
+    Top = 219
+    Width = 49
+    Height = 13
+    Caption = 'Telefone :'
+  end
+  object lbl_datanascfunc: TLabel
+    Left = 267
+    Top = 219
+    Width = 88
+    Height = 13
+    Caption = 'Data Nascimento :'
+  end
+  object lbl_emailfunc: TLabel
+    Left = 27
+    Top = 267
+    Width = 35
+    Height = 13
+    Caption = 'E-mail :'
+  end
+  object lbl_sexofunc: TLabel
+    Left = 184
+    Top = 333
+    Width = 28
+    Height = 13
+    Caption = 'Sexo:'
+  end
+  object Image_cadastrofunc: TImage
+    Left = 536
+    Top = 72
+    Width = 201
+    Height = 233
+  end
+  object edt_nomefunc: TEdit
+    Left = 82
+    Top = 72
+    Width = 420
+    Height = 21
+    TabOrder = 0
+  end
+  object edt_enderecofunc: TEdit
+    Left = 82
+    Top = 120
+    Width = 420
+    Height = 21
+    TabOrder = 1
+  end
+  object edt_cpffunc: TEdit
+    Left = 82
+    Top = 168
+    Width = 111
+    Height = 21
+    TabOrder = 2
+  end
+  object edt_rgfunc: TEdit
+    Left = 307
+    Top = 168
+    Width = 195
+    Height = 21
+    TabOrder = 3
+  end
+  object edt_emailfunc: TEdit
+    Left = 82
+    Top = 264
+    Width = 420
+    Height = 21
+    TabOrder = 4
+  end
+  object btn_carregarfotofunc: TButton
+    Left = 591
+    Top = 352
+    Width = 94
+    Height = 25
+    Caption = 'Carregar Foto'
+    TabOrder = 5
+    OnClick = btn_carregarfotofuncClick
+  end
+  object btn_salvarcadfun: TButton
+    Left = 100
+    Top = 384
+    Width = 127
+    Height = 33
+    Caption = 'Salvar'
+    TabOrder = 6
+    OnClick = btn_salvarcadfunClick
+  end
+  object btn_limpar: TButton
+    Left = 327
+    Top = 384
+    Width = 105
+    Height = 33
+    Caption = 'Limpar'
+    TabOrder = 7
+    OnClick = btn_limparClick
+  end
+  object edt_foto: TEdit
+    Left = 536
+    Top = 325
+    Width = 211
+    Height = 21
+    TabOrder = 8
+    Visible = False
+  end
+  object MaskEditdatapag: TMaskEdit
+    Left = 360
+    Top = 216
+    Width = 61
+    Height = 21
+    EditMask = '!99/99/9999;1;_'
+    MaxLength = 10
+    TabOrder = 9
+    Text = '  /  /    '
+  end
+  object MaskEdittel: TMaskEdit
+    Left = 82
+    Top = 211
+    Width = 87
+    Height = 21
+    EditMask = '!\(99\)00000-0000;1;_'
+    MaxLength = 14
+    TabOrder = 10
+    Text = '(  )     -    '
+  end
+  object ComboBoxsexofunc: TComboBox
+    Left = 226
+    Top = 325
+    Width = 145
+    Height = 21
+    TabOrder = 11
+    Items.Strings = (
+      'Masculino'
+      'Feminino')
+  end
+  object ComboBoxstatusfunc: TComboBox
+    Left = 24
+    Top = 8
+    Width = 145
+    Height = 21
+    TabOrder = 12
+    Visible = False
+    Items.Strings = (
+      'Ativo'
+      'Inativo')
+  end
+  object edt_codusu: TEdit
+    Left = 24
+    Top = 35
+    Width = 121
+    Height = 21
+    TabOrder = 13
+  end
+  object ADOConnection1: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=TCC;Data Source=(local);Use Procedure f' +
+      'or Prepare=1;Auto Translate=True;Packet Size=4096;Workstation ID' +
+      '=BP708856;Use Encryption for Data=False;Tag with column collatio' +
+      'n when possible=False;'
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 552
+    Top = 16
+  end
+  object ADOStoredProc1: TADOStoredProc
+    Connection = ADOConnection1
+    ProcedureName = 'SP_CADASFUNC;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+        Value = Null
+      end
+      item
+        Name = '@NOME'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = '@END_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = '@CPF_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 11
+        Value = Null
+      end
+      item
+        Name = '@RG_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 12
+        Value = Null
+      end
+      item
+        Name = '@TEL'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 15
+        Value = Null
+      end
+      item
+        Name = '@DTNASC_FUNC'
+        Attributes = [paNullable]
+        DataType = ftWideString
+        Size = 10
+        Value = Null
+      end
+      item
+        Name = '@EML_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = '@STA_FUNC'
+        Attributes = [paNullable]
+        DataType = ftBoolean
+        Value = Null
+      end
+      item
+        Name = '@SX_FUNC'
+        Attributes = [paNullable]
+        DataType = ftBoolean
+        Value = Null
+      end
+      item
+        Name = '@FT_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 255
+        Value = Null
+      end
+      item
+        Name = '@COD_USU'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+        Value = Null
+      end>
+    Left = 664
+    Top = 16
+  end
+  object OpenPictureDialog1: TOpenPictureDialog
+    Left = 448
+    Top = 24
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'JPEG Image File (*.jpg)|*.jpg|JPEG Image File (*.jpeg)|*.jpeg'
+    Left = 376
+    Top = 24
+  end
+end

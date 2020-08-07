@@ -1,0 +1,42 @@
+unit U_Cadastrar;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  Tfrm_cadastrar = class(TForm)
+    btn_cadastrarcli: TButton;
+    btn_cadasfunc: TButton;
+    btn_cadaslogin: TButton;
+    btn_cancelar: TButton;
+    procedure btn_cadastrarcliClick(Sender: TObject);
+    procedure btn_cadasfuncClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_cadastrar: Tfrm_cadastrar;
+
+implementation
+
+uses U_Cadastrar_Cliente, U_Cadastrar_Funcionario;
+
+{$R *.dfm}
+
+procedure Tfrm_cadastrar.btn_cadasfuncClick(Sender: TObject);
+begin
+  frm_cadasfunc.ShowModal;
+end;
+
+procedure Tfrm_cadastrar.btn_cadastrarcliClick(Sender: TObject);
+begin
+  frm_cadastrarcli.ShowModal;
+end;
+
+end.

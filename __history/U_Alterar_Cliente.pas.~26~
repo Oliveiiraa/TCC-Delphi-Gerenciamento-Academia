@@ -1,0 +1,498 @@
+unit U_Alterar_Cliente;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtDlgs, DB, ADODB, StdCtrls, Mask, ExtCtrls,Clipbrd ,pngimage;
+
+type
+  Tfrm_altercli = class(TForm)
+    lbl_nomecli: TLabel;
+    lbl_datanasccli: TLabel;
+    lbl_cpfcli: TLabel;
+    lbl_rgcli: TLabel;
+    lbl_enderecocli: TLabel;
+    lbl_telefonecli: TLabel;
+    lbl_datamatriculacli: TLabel;
+    lbl_emailcli: TLabel;
+    Image_AlterCli: TImage;
+    lbl_sexocli: TLabel;
+    edt_nomecli: TEdit;
+    edt_enderecocli: TEdit;
+    edt_emailcli: TEdit;
+    btn_carrerfotocli: TButton;
+    btn_salvarcasdastrocli: TButton;
+    MaskEditdatanasc: TMaskEdit;
+    MaskEditdatamatric: TMaskEdit;
+    MaskEdittelefone: TMaskEdit;
+    edt_foto: TEdit;
+    ComboBoxsexocli: TComboBox;
+    ComboBoxstatuscli: TComboBox;
+    edt_usuario: TEdit;
+    ADOConnectionAlterCli: TADOConnection;
+    ADOStoredProcAlterCli: TADOStoredProc;
+    ADOQueryAlterCli: TADOQuery;
+    OpenPictureDialogAlterCli: TOpenPictureDialog;
+    lbl_stacli: TLabel;
+    lbl_tipot: TLabel;
+    ComboBoxTipoTreino: TComboBox;
+    edt_cod: TEdit;
+    Image1: TImage;
+    Image3: TImage;
+    Image2: TImage;
+    Image6: TImage;
+    Image4: TImage;
+    Image5: TImage;
+    MaskEditRGCliAlter: TMaskEdit;
+    MaskEditCPFCliAlter: TMaskEdit;
+    ADOQueryMedidas: TADOQuery;
+    ADOQueryMedidasCOD_MD: TAutoIncField;
+    ADOQueryMedidasDTAVF_MD: TWideStringField;
+    ADOQueryMedidasPS_MD: TBCDField;
+    ADOQueryMedidasAT_MD: TBCDField;
+    ADOQueryMedidasBC_MD: TBCDField;
+    ADOQueryMedidasTC_MD: TBCDField;
+    ADOQueryMedidasPT_MD: TBCDField;
+    ADOQueryMedidasQD_MD: TBCDField;
+    ADOQueryMedidasCT_MD: TBCDField;
+    ADOQueryMedidasCX_MD: TBCDField;
+    ADOQueryMedidasOB_MD: TBCDField;
+    ADOQueryMedidasPTR_MD: TBCDField;
+    ADOQueryMedidasCOD_CLI: TIntegerField;
+    ADOQueryAlterCliCOD_CLI: TAutoIncField;
+    ADOQueryAlterCliNM_CLI: TStringField;
+    ADOQueryAlterCliEND_CLI: TStringField;
+    ADOQueryAlterCliCPF_CLI: TStringField;
+    ADOQueryAlterCliRG_CLI: TStringField;
+    ADOQueryAlterCliTEL_CLI: TStringField;
+    ADOQueryAlterCliDTMATRI_CLI: TWideStringField;
+    ADOQueryAlterCliDTNASC_CLI: TWideStringField;
+    ADOQueryAlterCliEML_CLI: TStringField;
+    ADOQueryAlterCliSTA_CLI: TBooleanField;
+    ADOQueryAlterCliSX_CLI: TStringField;
+    ADOQueryAlterCliFT_CLI: TStringField;
+    ADOQueryAlterCliTPT_CLI: TStringField;
+    ADOQueryAlterCliCOD_USU: TIntegerField;
+    procedure FormShow(Sender: TObject);
+    procedure btn_carrerfotocliClick(Sender: TObject);
+    procedure btn_salvarcasdastrocliClick(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+    procedure img_altermedidasClick(Sender: TObject);
+    procedure ComboBoxTipoTreinoKeyPress(Sender: TObject; var Key: Char);
+    procedure ComboBoxstatuscliKeyPress(Sender: TObject; var Key: Char);
+    procedure ComboBoxsexocliKeyPress(Sender: TObject; var Key: Char);
+    procedure MaskEditCPFCliAlterExit(Sender: TObject);
+    procedure edt_nomecliKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    function isCPF(CPF: string): boolean;
+    function imprimeCPF(CPF: string): string;
+  end;
+
+var
+  frm_altercli: Tfrm_altercli;
+
+implementation
+
+uses U_Consultar_Cliente, U_Cadastrar_Mensalidades, U_Consultar_Medidas;
+
+{$R *.dfm}
+
+procedure Tfrm_altercli.btn_carrerfotocliClick(Sender: TObject);
+begin
+  if OpenPictureDialogAlterCli.Execute then
+  begin
+    Image_AlterCli.Picture.LoadFromFile(OpenPictureDialogAlterCli.FileName);
+    edt_foto.Text := OpenPictureDialogAlterCli.FileName;
+    Image_AlterCli.Visible := True;
+  end;
+end;
+
+procedure Tfrm_altercli.btn_salvarcasdastrocliClick(Sender: TObject);
+var
+  anonasc,mesnasc,dianasc,anomatri,diamatri,mesmatri : String;
+begin
+  try
+  begin
+    ADOStoredProcAlterCli.Parameters[1].Value := edt_cod.Text;
+    ADOStoredProcAlterCli.Parameters[2].Value := edt_nomecli.Text;
+    ADOStoredProcAlterCli.Parameters[3].Value := edt_enderecocli.Text;
+    ADOStoredProcAlterCli.Parameters[4].Value := MaskEditCPFCliAlter.Text;
+    ADOStoredProcAlterCli.Parameters[5].Value := MaskEditRGCliAlter.Text;
+    ADOStoredProcAlterCli.Parameters[6].Value := MaskEdittelefone.Text;
+    anonasc := copy(MaskEditdatamatric.Text,7,4);
+    mesnasc := copy(MaskEditdatamatric.Text,4,2);
+    dianasc := copy(MaskEditdatamatric.Text,1,2);
+    ADOStoredProcAlterCli.Parameters[7].Value := anonasc + '/' + mesnasc + '/' + dianasc;
+    anomatri := copy(MaskEditdatanasc.Text,7,4);
+    mesmatri := copy(MaskEditdatanasc.Text,4,2);
+    diamatri := copy(MaskEditdatanasc.Text,1,2);
+    ADOStoredProcAlterCli.Parameters[8].Value := anomatri + '/' + mesmatri + '/' + diamatri;
+    ADOStoredProcAlterCli.Parameters[9].Value := edt_emailcli.Text;
+    ADOStoredProcAlterCli.Parameters[10].Value := ComboBoxstatuscli.ItemIndex;
+    ADOStoredProcAlterCli.Parameters[11].Value := ComboBoxsexocli.ItemIndex;
+    ADOStoredProcAlterCli.Parameters[12].Value := edt_foto.Text;
+    ADOStoredProcAlterCli.Parameters[13].Value := ComboBoxTipoTreino.ItemIndex;
+    ADOStoredProcAlterCli.Parameters[14].Value := edt_usuario.Text;
+
+    ADOStoredProcAlterCli.ExecProc;
+
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Close;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Open;
+    ////Unit_consultacli.form_consultacli.DBGridconsultacli.Refresh;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Refresh;
+
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Close;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Open;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Refresh;
+
+    MessageDlg('Cliente cadastrado com sucesso !',mtInformation,[mbOK],0);
+  end;
+  finally
+
+  end;
+end;
+
+procedure Tfrm_altercli.ComboBoxsexocliKeyPress(Sender: TObject; var Key: Char);
+begin
+  key:=#0;
+end;
+
+procedure Tfrm_altercli.ComboBoxstatuscliKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  key:=#0;
+end;
+
+procedure Tfrm_altercli.ComboBoxTipoTreinoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  key:=#0;
+end;
+
+procedure Tfrm_altercli.edt_nomecliKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key in ['A'..'Z','a'..'z',#32,#8,'-'] then
+  begin
+     key := key;
+
+  end
+  else
+  begin
+    key := #0;
+  end;
+end;
+
+procedure Tfrm_altercli.FormShow(Sender: TObject);
+begin
+  if (edt_foto.Text = EmptyStr) and (Image_AlterCli.Visible = false) then
+  begin
+    Image_AlterCli.Visible := True;
+    Image_AlterCli.Picture.LoadFromFile('C:\images.PNG');
+  end
+  else if (edt_foto.Text = EmptyStr) and (Image_AlterCli.Visible = True) then
+  begin
+    Image_AlterCli.Picture.LoadFromFile('C:\images.PNG');
+  end
+  else
+  begin
+    Image_AlterCli.Visible := True;
+    Image_AlterCli.Picture.LoadFromFile(edt_foto.Text);
+  end;
+end;
+
+procedure Tfrm_altercli.Image2Click(Sender: TObject);
+begin
+    if OpenPictureDialogAlterCli.Execute then
+  begin
+    Image_AlterCli.Picture.LoadFromFile(OpenPictureDialogAlterCli.FileName);
+    edt_foto.Text := OpenPictureDialogAlterCli.FileName;
+    Image_AlterCli.Visible := True;
+  end;
+end;
+
+procedure Tfrm_altercli.Image3Click(Sender: TObject);
+var
+  anonasc,mesnasc,dianasc,anomatri,diamatri,mesmatri,a,b,c,d,e,f,datac1 : String;
+begin
+  if edt_nomecli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o nome!',mtInformation,[mbOK],0);
+    edt_nomecli.SetFocus;
+    Exit;
+  end
+
+  else if MaskEditCPFCliAlter.Text = '   .   .   -  ' then
+  begin
+    MessageDlg('Informe o CPF!',mtInformation,[mbOK],0);
+    MaskEditCPFCliAlter.SetFocus;
+    Exit;
+  end
+
+  else if MaskEditRGCliAlter.Text = '  .   .   - ' then
+  begin
+    MessageDlg('Informe o RG!',mtInformation,[mbOK],0);
+    MaskEditRGCliAlter.SetFocus;
+    Exit;
+  end
+
+  else if MaskEditdatanasc.Text =  '  /  /    ' then
+  begin
+    MessageDlg('Informe a data de nascimento!',mtInformation,[mbOK],0);
+    MaskEditdatanasc.SetFocus;
+    Exit;
+  end;
+
+  a := copy(MaskEditdatanasc.Text,1,2);
+  b := copy(MaskEditdatanasc.Text,4,2);
+  c := copy(MaskEditdatanasc.Text,7,4);
+
+  if  a >= '32' then
+  begin
+    MessageDlg('Data inválida',mtError,[mbOK],0);
+    MaskEditdatanasc.SetFocus;
+    Exit;
+  end
+
+  else if b >= '13' then
+  begin
+    MessageDlg('Data inválida',mtError,[mbOK],0);
+    MaskEditdatanasc.SetFocus;
+    Exit;
+  end
+
+  else if edt_enderecocli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o endereço!',mtInformation,[mbOK],0);
+    edt_enderecocli.SetFocus;
+    Exit;
+  end
+
+  else if MaskEdittelefone.Text = '(  )     -    ' then
+  begin
+    MessageDlg('Informe o celular!',mtInformation,[mbOK],0);
+    MaskEdittelefone.SetFocus;
+    Exit;
+  end
+
+  else if MaskEditdatamatric.Text =  '  /  /    ' then
+  begin
+    MessageDlg('Informe a data de matrícula!',mtInformation,[mbOK],0);
+    MaskEditdatamatric.SetFocus;
+    Exit;
+  end;
+
+  d := copy(MaskEditdatamatric.Text,1,2);
+  e := copy(MaskEditdatamatric.Text,4,2);
+  f := copy(MaskEditdatamatric.Text,7,4);
+
+  if  d >= '32' then
+  begin
+    MessageDlg('Data inválida',mtError,[mbOK],0);
+    MaskEditdatamatric.SetFocus;
+    Exit;
+  end
+
+  else if e >= '13' then
+  begin
+    MessageDlg('Data inválida',mtError,[mbOK],0);
+    MaskEditdatamatric.SetFocus;
+    Exit;
+  end
+
+  else if edt_emailcli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o e-mail!',mtInformation,[mbOK],0);
+    edt_emailcli.SetFocus;
+    Exit;
+  end
+
+  else if ComboBoxsexocli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o sexo!',mtInformation,[mbOK],0);
+    ComboBoxsexocli.SetFocus;
+    Exit;
+  end
+
+  else if ComboBoxTipoTreino.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o tipo de treino!',mtInformation,[mbOK],0);
+    ComboBoxTipoTreino.SetFocus;
+    Exit;
+  end;
+
+  datac1 := DateToStr(Date);
+
+   if datac1 <= MaskEditdatanasc.Text then
+    begin
+      MessageDlg('Data inválida!',mtInformation,[mbOK],0);
+      exit;
+    end;
+
+   try
+  begin
+    ADOStoredProcAlterCli.Parameters[1].Value := edt_cod.Text;
+    ADOStoredProcAlterCli.Parameters[2].Value := edt_nomecli.Text;
+    ADOStoredProcAlterCli.Parameters[3].Value := edt_enderecocli.Text;
+    MaskEditCPFCliAlter.EditMask := '!999.999.999-99;1;_';
+    ADOStoredProcAlterCli.Parameters[4].Value := MaskEditCPFCliAlter.Text;
+    ADOStoredProcAlterCli.Parameters[5].Value := MaskEditRGCliAlter.Text;
+    ADOStoredProcAlterCli.Parameters[6].Value := MaskEdittelefone.Text;
+    anonasc := copy(MaskEditdatamatric.Text,7,4);
+    mesnasc := copy(MaskEditdatamatric.Text,4,2);
+    dianasc := copy(MaskEditdatamatric.Text,1,2);
+    ADOStoredProcAlterCli.Parameters[7].Value := anonasc + '/' + mesnasc + '/' + dianasc;
+    anomatri := copy(MaskEditdatanasc.Text,7,4);
+    mesmatri := copy(MaskEditdatanasc.Text,4,2);
+    diamatri := copy(MaskEditdatanasc.Text,1,2);
+    ADOStoredProcAlterCli.Parameters[8].Value := anomatri + '/' + mesmatri + '/' + diamatri;
+    ADOStoredProcAlterCli.Parameters[9].Value := edt_emailcli.Text;
+    ADOStoredProcAlterCli.Parameters[10].Value := ComboBoxstatuscli.itemindex;
+    ADOStoredProcAlterCli.Parameters[11].Value := ComboBoxsexocli.text;
+    ADOStoredProcAlterCli.Parameters[12].Value := edt_foto.Text;
+    ADOStoredProcAlterCli.Parameters[13].Value := ComboBoxTipoTreino.text;
+    ADOStoredProcAlterCli.Parameters[14].Value := edt_usuario.Text;
+
+    ADOStoredProcAlterCli.ExecProc;
+
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Close;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Open;
+    ////Unit_consultacli.form_consultacli.DBGridconsultacli.Refresh;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Refresh;
+
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Close;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Open;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Refresh;
+
+    MessageDlg('Cliente alterado com sucesso!',mtInformation,[mbOK],0);
+
+    Close;
+  end;
+  finally
+
+  end;
+end;
+
+procedure Tfrm_altercli.Image6Click(Sender: TObject);
+begin
+ if Application.MessageBox('Deseja realmente sair? Nenhum dado será alterado!','Atenção',MB_ICONQUESTION + MB_YESNO) = IDNO then
+ begin
+
+ end
+
+ else
+ begin
+   frm_altercli.Close;
+ end;
+
+end;
+
+procedure Tfrm_altercli.img_altermedidasClick(Sender: TObject);
+begin
+ // ADOQueryMedidasCOD_CLI.AsString := edt_cod.Text;
+
+  {U_Consultar_Medidas.frm_consultarmedi.MaskEditdataavaliacao.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliDTAVF_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.Editcodigo.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliCOD_CLI.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_nomeclimedidas.Text := edt_nomecli.Text;
+  U_Consultar_Medidas.frm_consultarmedi.edt_peso.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliPS_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_altura.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliAT_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_biceps.Text :=  U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliBC_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_triceps.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliTC_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_peitoral.Text :=  U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliPT_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_quadril.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliQD_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_cintura.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliCT_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_coxa.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliCX_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_ombro.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliOB_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_panturrilha.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliPTR_MD.AsString;
+
+  frm_consultarmedi.ShowModal;}
+end;
+
+function Tfrm_altercli.imprimeCPF(CPF: string): string;
+begin
+  imprimeCPF := copy(CPF, 1, 3) + '.' + copy(CPF, 4, 3) + '.' +
+    copy(CPF, 7, 3) + '-' + copy(CPF, 10, 2);
+end;
+
+function Tfrm_altercli.isCPF(CPF: string): boolean;
+var  dig10, dig11: string;
+    s, i, r, peso: integer;
+begin
+   // length - retorna o tamanho da string do CPF (CPF é um número formado por 11 dígitos)
+  if ((CPF = '00000000000') or (CPF = '11111111111') or
+      (CPF = '22222222222') or (CPF = '33333333333') or
+      (CPF = '44444444444') or (CPF = '55555555555') or
+      (CPF = '66666666666') or (CPF = '77777777777') or
+      (CPF = '88888888888') or (CPF = '99999999999') or
+      (length(CPF) <> 11))
+     then begin
+            isCPF := false;
+            exit;
+          end;
+
+// "try" - protege o código para eventuais erros de conversão de tipo através da função "StrToInt"
+  try
+{ *-- Cálculo do 1o. Digito Verificador --* }
+    s := 0;
+    peso := 10;
+    for i := 1 to 9 do
+    begin
+// StrToInt converte o i-ésimo caractere do CPF em um número
+      s := s + (StrToInt(CPF[i]) * peso);
+      peso := peso - 1;
+    end;
+    r := 11 - (s mod 11);
+    if ((r = 10) or (r = 11))
+       then dig10 := '0'
+    else str(r:1, dig10); // converte um número no respectivo caractere numérico
+
+{ *-- Cálculo do 2o. Digito Verificador --* }
+    s := 0;
+    peso := 11;
+    for i := 1 to 10 do
+    begin
+      s := s + (StrToInt(CPF[i]) * peso);
+      peso := peso - 1;
+    end;
+    r := 11 - (s mod 11);
+    if ((r = 10) or (r = 11))
+       then dig11 := '0'
+    else str(r:1, dig11);
+
+{ Verifica se os digitos calculados conferem com os digitos informados. }
+    if ((dig10 = CPF[10]) and (dig11 = CPF[11]))
+       then isCPF := true
+    else isCPF := false;
+  except
+    isCPF := false
+  end;
+end;
+
+procedure Tfrm_altercli.MaskEditCPFCliAlterExit(Sender: TObject);
+begin
+  if (MaskEditCPFCliAlter.Text = '   .   .   -  ') or (MaskEditCPFCliAlter.Text = EmptyStr) then
+   begin
+     MessageDlg('É necessário preencher o CPF, corretamente!',mtError,[mbOK],0);
+     MaskEditCPFCliAlter.SetFocus;
+     exit;
+   end;
+
+    MaskEditCPFCliAlter.EditMask := '!999.999.999-99;0;_';  /////
+    if isCPF(MaskEditCPFCliAlter.Text) then
+    begin
+         Exit;
+    end
+    else
+    begin
+          MessageDlg('CPF inválido!',mtInformation,[mbOK],0);
+          MaskEditCPFCliAlter.SetFocus;
+          Exit;
+    end
+end;
+
+end.

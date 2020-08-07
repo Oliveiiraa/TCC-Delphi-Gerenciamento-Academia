@@ -1,0 +1,210 @@
+object frm_calimc: Tfrm_calimc
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Calcular IMC'
+  ClientHeight = 399
+  ClientWidth = 524
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox1: TGroupBox
+    Left = 5
+    Top = 5
+    Width = 520
+    Height = 75
+    Caption = 'Dados de Entrada:'
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 10
+      Top = 25
+      Width = 101
+      Height = 13
+      Caption = 'Massa Corporal (Kg):'
+    end
+    object Label2: TLabel
+      Left = 145
+      Top = 25
+      Width = 52
+      Height = 13
+      Caption = 'Altura (m):'
+    end
+    object ed_pc: TEdit
+      Left = 10
+      Top = 39
+      Width = 121
+      Height = 21
+      TabOrder = 0
+    end
+    object ed_alt: TEdit
+      Left = 145
+      Top = 39
+      Width = 121
+      Height = 21
+      TabOrder = 1
+    end
+    object Button1: TButton
+      Left = 285
+      Top = 37
+      Width = 75
+      Height = 25
+      Caption = '&Calcular IMC'
+      TabOrder = 2
+      OnClick = Button1Click
+    end
+    object BitBtn1: TBitBtn
+      Left = 435
+      Top = 37
+      Width = 75
+      Height = 25
+      Caption = '&Fechar'
+      DoubleBuffered = True
+      Kind = bkClose
+      ParentDoubleBuffered = False
+      TabOrder = 3
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 5
+    Top = 88
+    Width = 520
+    Height = 320
+    Caption = 'Resultados:'
+    TabOrder = 1
+    object Label3: TLabel
+      Left = 10
+      Top = 25
+      Width = 23
+      Height = 13
+      Caption = 'IMC:'
+    end
+    object ed_result: TEdit
+      Left = 10
+      Top = 39
+      Width = 121
+      Height = 21
+      TabStop = False
+      Color = 16776176
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object Panel1: TPanel
+      Tag = 1
+      Left = 10
+      Top = 75
+      Width = 500
+      Height = 35
+      Caption = 'Valores de IMC abaixo de 18,5: adulto com baixo peso.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      Visible = False
+    end
+    object Panel2: TPanel
+      Tag = 2
+      Left = 10
+      Top = 115
+      Width = 500
+      Height = 35
+      Caption = 
+        'Valores de IMC maior ou igual a 18,5 e menor que 25,0: adulto co' +
+        'm peso adequado (eutr'#243'fico).'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      Visible = False
+    end
+    object Panel3: TPanel
+      Tag = 3
+      Left = 10
+      Top = 155
+      Width = 500
+      Height = 35
+      Caption = 
+        'Valores de IMC maior ou igual a 25,0 e menor que 30,0: adulto co' +
+        'm sobrepeso.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 3
+      Visible = False
+    end
+    object Panel4: TPanel
+      Tag = 4
+      Left = 10
+      Top = 195
+      Width = 500
+      Height = 35
+      Caption = 
+        'Valores de IMC maior ou igual a 30,0 e menor que 35,0: adulto co' +
+        'm obesidade grau I.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 4
+      Visible = False
+    end
+    object Panel5: TPanel
+      Tag = 5
+      Left = 10
+      Top = 235
+      Width = 500
+      Height = 35
+      Caption = 
+        'Valores de IMC maior ou igual a 35,0 e menor que 40,0: adulto co' +
+        'm obesidade grau II (severa).'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 5
+      Visible = False
+    end
+    object Panel6: TPanel
+      Tag = 6
+      Left = 10
+      Top = 275
+      Width = 500
+      Height = 35
+      Caption = 
+        'Valores de IMC maior ou igual a 40,0: adulto com obesidade grau ' +
+        'III (m'#243'rbida).'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 6
+      Visible = False
+    end
+  end
+end

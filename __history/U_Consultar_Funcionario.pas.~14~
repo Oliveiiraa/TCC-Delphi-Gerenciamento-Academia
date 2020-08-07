@@ -1,0 +1,141 @@
+unit U_Consultar_Funcionario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Clipbrd,
+  Dialogs, StdCtrls, DB, ADODB, Grids, DBGrids;
+
+type
+  Tfrm_consultafunc = class(TForm)
+    edt_buscafunc: TEdit;
+    bnt_buscafunc: TButton;
+    bnt_cancelarbuscafunc: TButton;
+    DBGridconsultafunc: TDBGrid;
+    bnt_editarfunc: TButton;
+    DataSourceconsultafunc: TDataSource;
+    ADOQueryconsultafunc: TADOQuery;
+    ADOStoredProc1: TADOStoredProc;
+    ADOConnectionconsultafunc: TADOConnection;
+    ComboBoxConsultafunc: TComboBox;
+    ADOQueryconsultafunccodigo_func: TAutoIncField;
+    ADOQueryconsultafuncnome_func: TStringField;
+    ADOQueryconsultafuncendereco_func: TStringField;
+    ADOQueryconsultafunccpf_func: TStringField;
+    ADOQueryconsultafuncrg_func: TStringField;
+    ADOQueryconsultafunctelefone_func: TStringField;
+    ADOQueryconsultafuncdatapagamento_func: TWideStringField;
+    ADOQueryconsultafuncemail_func: TStringField;
+    ADOQueryconsultafuncsexo_func: TBooleanField;
+    ADOQueryconsultafuncstatus_func: TBooleanField;
+    ADOQueryconsultafuncfotofunc: TStringField;
+    procedure ADOQueryconsultafuncsexo_funcGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure bnt_buscafuncClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure bnt_editarfuncClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_consultafunc: Tfrm_consultafunc;
+
+implementation
+
+uses U_Alterar_Funcionario;
+
+{$R *.dfm}
+
+procedure Tfrm_consultafunc.ADOQueryconsultafuncsexo_funcGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  begin
+    if Sender.AsString = 'False' then
+       Text := 'Masculino'
+    else
+       if Sender.AsString = 'True' then
+          Text := 'Feminino'
+       else
+          Text := 'Indefinido';
+end;
+end;
+
+procedure Tfrm_consultafunc.bnt_buscafuncClick(Sender: TObject);
+begin
+  if edt_buscafunc.Text = '' then
+  begin
+    MessageDlg('Digite algo para busca !',mtError,[mbOK],0);
+  end;
+
+  with ADOQueryconsultafunc do
+  begin
+    Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('Select*from FUNCIONARIO                                           ');
+    sql.Add('Where nome_func LIKE ''%' + edt_buscafunc.Text + '%''                   ');
+    Clipboard.AsText := ADOQueryconsultafunc.SQL.Text;
+    Open;
+    Active := True;
+  end;
+end;
+
+procedure Tfrm_consultafunc.bnt_editarfuncClick(Sender: TObject);
+var
+ano_atual, mes_atual, dia_atual : string;
+begin
+  U_Alterar_Funcionario.frm_alterafunc.edt_nomefunc.Text := ADOQueryconsultafuncnome_func.AsString;
+  U_Alterar_Funcionario.frm_alterafunc.edt_enderecofunc.Text := ADOQueryconsultafuncendereco_func.AsString;
+  U_Alterar_Funcionario.frm_alterafunc.edt_cpffunc.Text := ADOQueryconsultafunccpf_func.AsString;
+  U_Alterar_Funcionario.frm_alterafunc.edt_rgfunc.Text := ADOQueryconsultafuncrg_func.AsString;
+  U_Alterar_Funcionario.frm_alterafunc.edt_emailfunc.Text := ADOQueryconsultafuncemail_func.AsString;
+  /////U_Alterar_Funcionario.frm_alterafunc.edt_complementofunc.Text := ADOQueryconsultafunccomplemento.AsString;
+  U_Alterar_Funcionario.frm_alterafunc.edt_foto.Text := ADOQueryconsultafuncfotofunc.AsString;
+  ano_atual := Copy(ADOQueryconsultafuncdatapagamento_func.AsString,1,4);
+  mes_atual := Copy(ADOQueryconsultafuncdatapagamento_func.AsString,6,2);
+  dia_atual := Copy(ADOQueryconsultafuncdatapagamento_func.AsString,9,2);
+
+  U_Alterar_Funcionario.frm_alterafunc.MaskEditdatapag.Text := dia_atual + '/' +
+                                                               mes_atual + '/' +
+                                                               ano_atual;
+  ShowMessage(dia_atual + '/' + mes_atual + '/' + ano_atual);
+
+  U_Alterar_Funcionario.frm_alterafunc.MaskEdittel.Text := ADOQueryconsultafunctelefone_func.AsString;
+
+  if (ADOQueryconsultafuncsexo_func.AsBoolean = True) and (ADOQueryconsultafuncstatus_func.AsBoolean = True) then
+  begin
+    U_Alterar_Funcionario.frm_alterafunc.ComboBoxsexofunc.ItemIndex := 1;
+    U_Alterar_Funcionario.frm_alterafunc.ComboBoxstatusfunc.ItemIndex := 1;
+  end
+
+  else if (ADOQueryconsultafuncsexo_func.AsBoolean = False) and (ADOQueryconsultafuncstatus_func.AsBoolean = False) then
+  begin
+    U_Alterar_Funcionario.frm_alterafunc.ComboBoxsexofunc.ItemIndex := 0;
+    U_Alterar_Funcionario.frm_alterafunc.ComboBoxstatusfunc.ItemIndex := 0;
+  end
+
+  else if (ADOQueryconsultafuncsexo_func.AsBoolean = False) and (ADOQueryconsultafuncstatus_func.AsBoolean = True) then
+  begin
+    U_Alterar_Funcionario.frm_alterafunc.ComboBoxsexofunc.ItemIndex := 1;
+    U_Alterar_Funcionario.frm_alterafunc.ComboBoxstatusfunc.ItemIndex := 0;
+  end
+
+  else if (ADOQueryconsultafuncsexo_func.AsBoolean = True) and (ADOQueryconsultafuncstatus_func.AsBoolean = False) then
+  begin
+    U_Alterar_Funcionario.frm_alterafunc.ComboBoxsexofunc.ItemIndex := 0;
+    U_Alterar_Funcionario.frm_alterafunc.ComboBoxstatusfunc.ItemIndex := 1;
+  end;
+
+  frm_alterafunc.ShowModal;
+end;
+
+procedure Tfrm_consultafunc.FormShow(Sender: TObject);
+begin
+  ADOQueryconsultafunc.Close;
+  ADOQueryconsultafunc.Open;
+  ADOQueryconsultafunc.Refresh;
+end;
+end.

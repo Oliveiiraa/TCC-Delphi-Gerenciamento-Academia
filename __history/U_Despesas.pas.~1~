@@ -1,0 +1,35 @@
+unit U_Despesas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls;
+
+type
+  Tfrm_despesas = class(TForm)
+    btn_cadastrardespesas: TButton;
+    btn_consultardespesas: TButton;
+    btn_cancelardespesas: TButton;
+    procedure btn_cadastrardespesasClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_despesas: Tfrm_despesas;
+
+implementation
+
+uses U_Cadastrar_Despesas;
+
+{$R *.dfm}
+
+procedure Tfrm_despesas.btn_cadastrardespesasClick(Sender: TObject);
+begin
+  frm_cadasdespesas.ShowModal;
+end;
+
+end.

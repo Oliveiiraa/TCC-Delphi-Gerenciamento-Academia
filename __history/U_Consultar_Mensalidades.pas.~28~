@@ -1,0 +1,269 @@
+unit U_Consultar_Mensalidades;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ADODB, Grids, DBGrids, StdCtrls, Clipbrd, Menus,DateUtils,
+  pngimage, ExtCtrls;
+
+type
+  Tfrm_consultmensa = class(TForm)
+    ADOQueryConsultaMensa: TADOQuery;
+    DBGridConsultaMensa: TDBGrid;
+    DataSourceConsultaMensa: TDataSource;
+    ADOConnectionConsultaMensa: TADOConnection;
+    Edit1: TEdit;
+    btn_buscarconsulcli: TButton;
+    edt_buscacli: TEdit;
+    ComboBoxConsultacli: TComboBox;
+    btn_efetuarpag: TButton;
+    ADOStoredProcAlterarSit: TADOStoredProc;
+    ADOStoredProcAdicionarMensa: TADOStoredProc;
+    PopupMenuPagar: TPopupMenu;
+    Pagar1: TMenuItem;
+    ADOQueryConsultaMensaNM_CLI: TStringField;
+    ADOQueryConsultaMensaDTPAG_MSD: TWideStringField;
+    ADOQueryConsultaMensaDTVENC_MSD: TWideStringField;
+    ADOQueryConsultaMensaVL_MSD: TBCDField;
+    ADOQueryConsultaMensaCOD_CLI: TAutoIncField;
+    ADOQueryConsultaMensaCOD_MSD: TAutoIncField;
+    Image1: TImage;
+    procedure DBGridConsultaMensaDrawColumnCell(Sender: TObject;
+      const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
+    procedure FormShow(Sender: TObject);
+    procedure btn_buscarconsulcliClick(Sender: TObject);
+    procedure ADOQueryConsultaMensaSIT_MSDGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure btn_efetuarpagClick(Sender: TObject);
+    procedure Pagar1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_consultmensa: Tfrm_consultmensa;
+
+implementation
+
+uses U_Cadastrar_Mensalidades, U_Alterar_Mensalidade;
+
+{$R *.dfm}
+
+procedure Tfrm_consultmensa.ADOQueryConsultaMensaSIT_MSDGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  if SENDER.AsString = 'False' then
+    text := 'Não Pago'
+  else
+    Text := 'Pago'
+end;
+
+procedure Tfrm_consultmensa.btn_efetuarpagClick(Sender: TObject);
+var
+ano1, mes1, dia1,ano2, mes2, dia2 : string;
+begin
+
+    U_Alterar_Mensalidade.frm_alterarmensa.edt_nmcli.Text := ADOQueryConsultaMensaNM_CLI.AsString;
+    U_Alterar_Mensalidade.frm_alterarmensa.edt_codcli.Text := ADOQueryConsultaMensaCOD_MSD.AsString;
+    U_Alterar_Mensalidade.frm_alterarmensa.edt_valor.Text := ADOQueryConsultaMensaVL_MSD.AsString;
+    ano1 := copy(ADOQueryConsultaMensaDTPAG_MSD.AsString,1,4);
+    mes1 := copy(ADOQueryConsultaMensaDTPAG_MSD.AsString,6,2);
+    dia1 := copy(ADOQueryConsultaMensaDTPAG_MSD.AsString,9,2);
+    U_Alterar_Mensalidade.frm_alterarmensa.MaskEditDataPag.Text := dia1 + '/' + mes1 + '/' + ano1;
+    ano2 := copy(ADOQueryConsultaMensaDTVENC_MSD.AsString,1,4);
+    mes2 := copy(ADOQueryConsultaMensaDTVENC_MSD.AsString,6,2);
+    dia2 := copy(ADOQueryConsultaMensaDTVENC_MSD.AsString,9,2);
+    U_Alterar_Mensalidade.frm_alterarmensa.MaskEditDataVenc.Text := dia2 + '/' + mes2 + '/' + ano2;
+
+    frm_alterarmensa.ShowModal;
+
+    {if ADOQueryConsultaMensaDTVENC_MSD.AsString < Edit1.Text then
+    begin
+    ADOStoredProcAlterarSit.Parameters[1].Value := ADOQueryConsultaMensaCOD_MSD.AsString;
+    ADOStoredProcAlterarSit.Parameters[2].Value := 1;
+    dia1 := Copy(Edit1.Text,1,2);
+    mes1 := Copy(Edit1.Text,4,2);
+    ano1 := Copy(Edit1.Text,7,4);
+    ADOStoredProcAlterarSit.Parameters[3].Value := ano1 + '/' + mes1 + '/' + dia1;
+
+    ADOStoredProcAlterarSit.ExecProc;
+
+    frm_cadasmensalidades.ShowModal;
+
+    //datacompleto := ADOQueryConsultaMensaDTVENC_MSD.AsString;
+    //dia := COPY(datacompleto,9,2);
+    //mes := COPY(datacompleto,6,2);
+    //ano := COPY(datacompleto,1,4);
+    frm_cadasmensalidades.MaskEditDataVenc.Text :=  ADOQueryConsultaMensaDTVENC_MSD.AsString;   }
+
+    //ADOStoredProcAdicionarMensa.Parameters[1].Value := '';
+ // end;
+
+    ///for i := 0 to ADOQueryConsultaMensaSIT_MSD.AsBoolean := 'False' do
+   // with ADOQueryConsultaMensa do
+   // begin
+    //Active := False;
+    //Close;
+    //SQL.Clear;
+    //SQL.Add('SELECT DATEADD(MONTH,1,DTMATRI_CLI) FROM TB_CLIENTES WHERE COD_CLI = ' + ADOQueryConsultaMensaCOD_CLI.AsString);
+    //Clipboard.AsText := ADOQueryConsultaMensa.SQL.Text;
+    //Open;
+    //Active := True;
+    //end;
+
+    //a := copy(ADOQueryConsultaMensaDTVENC_MSD.AsString,6,2);
+   // a := IntToStr( a + 1);
+    //if a > 12 then
+    //begin
+      //b := copy(ADOQueryConsultaMensaDTVENC_MSD.AsString,1,4);
+      //b := b + 1;
+      //a := 1;
+    //end
+    //else if a = 2 then
+    //begin
+      //c := copy(ADOQueryConsultaMensaDTVENC_MSD.AsString,9,2);
+
+    //end ;
+    //ADOStoredProcAdicionarMensa.Parameters[2].Value := ADOQueryConsultaMensaDTVENC_MSD.AsString;
+    //ADOStoredProcAdicionarMensa.Parameters[2].Value := b + '/' + a + '/' + c;
+   //ADOStoredProcAdicionarMensa.Parameters[3].Value := ADOQueryConsultaMensaVL_MSD.AsString;
+   // ADOStoredProcAdicionarMensa.Parameters[4].Value := 0;
+   // ADOStoredProcAdicionarMensa.Parameters[5].Value := ADOQueryConsultaMensaCOD_CLI.AsString;
+   //ADOStoredProcAdicionarMensa.ExecProc;
+
+   // ADOQueryConsultaMensa.Close;
+   // ADOQueryConsultaMensa.Open;
+   // ADOQueryConsultaMensa.Refresh;
+    //DBGridConsultaMensa.Refresh;
+
+   // end;
+   // end;
+    //else
+    //begin
+    //ADOStoredProcAdicionarMensa.Parameters[1].Value := '';
+
+    //with ADOQueryConsultaMensa do
+    //begin
+    //Active := False;
+    //Close;
+    //SQL.Clear;
+    //SQL.Add('SELECT DATEADD(MONTH,1,DTMATRI_CLI) FROM TB_CLIENTES WHERE COD_CLI = ' + ADOQueryConsultaMensaCOD_CLI.AsString);
+    //Clipboard.AsText := ADOQueryConsultaMensa.SQL.Text;
+    //Open;
+    //Active := True;
+    //end;
+    //ADOStoredProcAdicionarMensa.Parameters[2].Value := ADOQueryConsultaMensaDTVENC_MSD.AsString;
+    //ADOStoredProcAdicionarMensa.Parameters[3].Value := ADOQueryConsultaMensaVL_MSD.AsString;
+    //ADOStoredProcAdicionarMensa.Parameters[4].Value := 0;
+    //ADOStoredProcAdicionarMensa.Parameters[5].Value := ADOQueryConsultaMensaCOD_CLI.AsString;
+    //ADOStoredProcAdicionarMensa.ExecProc;
+
+    //ADOQueryConsultaMensa.Close;
+    //ADOQueryConsultaMensa.Open;
+    //ADOQueryConsultaMensa.Refresh;
+    //DBGridConsultaMensa.Refresh;
+  //end;
+
+end;
+
+procedure Tfrm_consultmensa.btn_buscarconsulcliClick(Sender: TObject);
+begin
+  case ComboBoxConsultacli.ItemIndex of
+  0: with ADOQueryConsultaMensa do
+    begin
+    Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('SELECT*FROM TB_CLIENTES ');
+    sql.Add('WHERE STA_CLI = 0 AND COD_CLI LIKE ''%' +  edt_buscacli.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultaMensa.SQL.Text;
+    Open;
+    Active := True;
+    end;
+   1:with ADOQueryConsultaMensa do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('SELECT*FROM TB_CLIENTES,TB_MENSALIDADES ');
+    sql.Add('WHERE TB_MENSALIDADES.COD_CLI = TB_CLIENTES.COD_CLI and STA_CLI = 0 AND NM_CLI LIKE ''%' +  edt_buscacli.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultaMensa.SQL.Text;
+    Open;
+    Active := True;
+    end;
+    2:with ADOQueryConsultaMensa do
+    begin
+      Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('SELECT*FROM TB_CLIENTES,TB_MENSALIDADES                                           ');
+    sql.Add('WHERE TB_MENSALIDADES.COD_CLI = TB_CLIENTES.COD_CLI and STA_CLI = 0 AND DTVENC_MSD LIKE ''%' +  edt_buscacli.text + '%''              ');
+    Clipboard.AsText := ADOQueryConsultaMensa.SQL.Text;
+    Open;
+    Active := True;
+    end;
+  end;
+  if ADOQueryConsultaMensa.RecordCount < 1 then
+  begin
+    MessageDlg('Nenhum registro encontrado!',mtError,[mbOK],3);
+  end;
+end;
+
+procedure Tfrm_consultmensa.DBGridConsultaMensaDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+  var
+  datac,ano1,dia1,mes1,data : string;
+begin
+      dia1 := copy(Edit1.Text,1,2);
+      mes1 := copy(Edit1.Text,4,2);
+      ano1 := copy(Edit1.Text,7,4);
+      datac := ano1 + '-' + mes1 + '-' + dia1;
+      data := ADOQueryConsultaMensaDTVENC_MSD.AsString;
+if (datac < data) then
+ begin
+    TDBGrid(Sender).Canvas.Brush.Color:= clYellow;
+    //Font.Style := [fsbold];
+ end
+
+ else
+ begin
+     TDBGrid(Sender).Canvas.Brush.Color:= clRed;
+     //Font.Color := clRed;
+ end;
+
+   TDBGrid(Sender).DefaultDrawDataCell(Rect, TDBGrid(Sender).columns[datacol].field, State);
+end;
+
+procedure Tfrm_consultmensa.FormShow(Sender: TObject);
+begin
+  Edit1.text := datetostr(Date);
+  ADOQueryConsultaMensa.Close;
+  ADOQueryConsultaMensa.Open;
+  DBGridConsultaMensa.Refresh;
+end;
+
+procedure Tfrm_consultmensa.Pagar1Click(Sender: TObject);
+begin
+  {if ADOQueryConsultaMensaSIT_MSD.AsString = 'False' then
+    begin
+    ADOStoredProcAlterarSit.Parameters[1].Value := ADOQueryConsultaMensaCOD_MSD.AsString;
+    ADOStoredProcAlterarSit.Parameters[2].Value := 1;
+    //dia1 := Copy(Edit1.Text,1,2);
+    //mes1 := Copy(Edit1.Text,4,2);
+    //ano1 := Copy(Edit1.Text,7,4);
+    ADOStoredProcAlterarSit.Parameters[3].Value := Edit1.Text ;
+
+    ADOStoredProcAlterarSit.ExecProc;
+
+    ADOQueryConsultaMensa.Close;
+    ADOQueryConsultaMensa.Open;
+    ADOQueryConsultaMensa.Refresh;
+    DBGridConsultaMensa.Refresh;
+    end; }
+end;
+
+end.

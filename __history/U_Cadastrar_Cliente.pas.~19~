@@ -1,0 +1,231 @@
+unit U_Cadastrar_Cliente;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtDlgs, DB, ADODB, StdCtrls, Mask, ExtCtrls, jpeg, pngimage;
+
+type
+  Tfrm_cadastrarcli = class(TForm)
+    lbl_nomecli: TLabel;
+    lbl_datanasccli: TLabel;
+    lbl_cpfcli: TLabel;
+    lbl_rgcli: TLabel;
+    lbl_enderecocli: TLabel;
+    lbl_telefonecli: TLabel;
+    lbl_datamatriculacli: TLabel;
+    lbl_emailcli: TLabel;
+    Image_cadastrocli: TImage;
+    lbl_sexocli: TLabel;
+    edt_nomecli: TEdit;
+    edt_cpfcli: TEdit;
+    edt_rgcli: TEdit;
+    edt_enderecocli: TEdit;
+    edt_emailcli: TEdit;
+    btn_carrerfotocli: TButton;
+    btn_salvarcasdastrocli: TButton;
+    btn_limpar: TButton;
+    MaskEditdatanasc: TMaskEdit;
+    MaskEditdatamatric: TMaskEdit;
+    MaskEdittelefone: TMaskEdit;
+    edt_foto: TEdit;
+    ComboBoxsexocli: TComboBox;
+    ComboBoxstatuscli: TComboBox;
+    ADOConnection1: TADOConnection;
+    ADOStoredProc1: TADOStoredProc;
+    ADOQueryCadascli: TADOQuery;
+    OpenPictureDialogCadascli: TOpenPictureDialog;
+    edt_usuario: TEdit;
+    ADOQueryCadascliCOD_CLI: TAutoIncField;
+    ADOQueryCadascliNM_CLI: TStringField;
+    ADOQueryCadascliEND_CLI: TStringField;
+    ADOQueryCadascliCPF_CLI: TStringField;
+    ADOQueryCadascliRG_CLI: TStringField;
+    ADOQueryCadascliTEL_CLI: TStringField;
+    ADOQueryCadascliDTMATRI_CLI: TWideStringField;
+    ADOQueryCadascliDTNASC_CLI: TWideStringField;
+    ADOQueryCadascliEML_CLI: TStringField;
+    ADOQueryCadascliSTA_CLI: TBooleanField;
+    ADOQueryCadascliSX_CLI: TBooleanField;
+    ADOQueryCadascliFT_CLI: TStringField;
+    ADOQueryCadascliCOD_USU: TIntegerField;
+    lbl_tipot: TLabel;
+    ComboBoxTipoTreino: TComboBox;
+    Image1: TImage;
+    ADOQueryCadascliTPT_CLI: TBooleanField;
+    procedure btn_carrerfotocliClick(Sender: TObject);
+    procedure btn_limparClick(Sender: TObject);
+    procedure btn_salvarcasdastrocliClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_cadastrarcli: Tfrm_cadastrarcli;
+
+implementation
+
+uses U_Cadastrar, U_Cadastrar_Medidas, U_Consultar_Cliente, U_Login_Sistema,
+  U_Cadastrar_Mensalidades, U_Aniversariantes;
+
+{$R *.dfm}
+
+procedure Tfrm_cadastrarcli.btn_limparClick(Sender: TObject);
+begin
+  edt_nomecli.Clear;
+  edt_cpfcli.Clear;
+  edt_rgcli.Clear;
+  edt_enderecocli.Clear;
+  edt_emailcli.Clear;
+  edt_foto.Clear;
+  edt_usuario.Clear;
+  MaskEditdatanasc.Clear;
+  MaskEditdatamatric.Clear;
+  MaskEdittelefone.Clear;
+  ComboBoxTipoTreino.ItemIndex := -1;
+  Image_cadastrocli.Picture.LoadFromFile('C:\images.PNG');
+end;
+
+procedure Tfrm_cadastrarcli.btn_carrerfotocliClick(Sender: TObject);
+begin
+  if OpenPictureDialogCadascli.Execute then
+  begin
+    Image_cadastrocli.Picture.LoadFromFile(OpenPictureDialogCadascli.FileName);
+    edt_foto.Text := OpenPictureDialogCadascli.FileName;
+    Image_cadastrocli.Visible := True;
+  end;
+end;
+
+procedure Tfrm_cadastrarcli.btn_salvarcasdastrocliClick(Sender: TObject);
+var
+anomatri, mesmatri, diamatri : string;
+anonasc, mesnasc, dianasc,fone : string;
+fone1,fone2,fone3 : string;
+begin
+   if edt_nomecli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o nome !',mtInformation,[mbOK],0);
+    edt_nomecli.SetFocus;
+  end
+
+  else if edt_cpfcli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o CPF !',mtInformation,[mbOK],0);
+    edt_cpfcli.SetFocus;
+  end
+
+  else if edt_rgcli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o RG !',mtInformation,[mbOK],0);
+    edt_rgcli.SetFocus;
+  end
+
+  else if edt_enderecocli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o endereço !',mtInformation,[mbOK],0);
+    edt_enderecocli.SetFocus;
+  end
+
+  else if MaskEdittelefone.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o telefone !',mtInformation,[mbOK],0);
+    MaskEdittelefone.SetFocus;
+  end
+
+  else if edt_emailcli.Text = EmptyStr then
+  begin
+    MessageDlg('Informe o e-mail !',mtInformation,[mbOK],0);
+    edt_emailcli.SetFocus;
+  end
+
+  else if ComboBoxsexocli.ItemIndex = -1 then
+  begin
+    MessageDlg('Informe o sexo !',mtInformation,[mbOK],0);
+    ComboBoxsexocli.SetFocus;
+  end;
+
+  try
+  begin
+    ADOStoredProc1.Parameters[1].Value := edt_nomecli.Text;
+    ADOStoredProc1.Parameters[2].Value := edt_enderecocli.Text;
+    ADOStoredProc1.Parameters[3].Value := edt_cpfcli.Text;
+    ADOStoredProc1.Parameters[4].Value := edt_rgcli.Text;
+    ADOStoredProc1.Parameters[5].Value := MaskEdittelefone.Text;
+    anonasc := copy(MaskEditdatamatric.Text,7,4);
+    mesnasc := copy(MaskEditdatamatric.Text,4,2);
+    dianasc := copy(MaskEditdatamatric.Text,1,2);
+    ADOStoredProc1.Parameters[6].Value := anonasc + '/' + mesnasc + '/' + dianasc;
+    anomatri := copy(MaskEditdatanasc.Text,7,4);
+    mesmatri := copy(MaskEditdatanasc.Text,4,2);
+    diamatri := copy(MaskEditdatanasc.Text,1,2);
+    ADOStoredProc1.Parameters[7].Value := anomatri + '/' + mesmatri + '/' + diamatri;
+    ADOStoredProc1.Parameters[8].Value := edt_emailcli.Text;
+    ADOStoredProc1.Parameters[9].Value := ComboBoxsexocli.ItemIndex;
+    ComboBoxstatuscli.ItemIndex := 0;
+    ADOStoredProc1.Parameters[10].Value := ComboBoxstatuscli.ItemIndex;
+    ADOStoredProc1.Parameters[11].Value := edt_foto.Text;
+    ADOStoredProc1.Parameters[12].Value := ComboBoxTipoTreino.ItemIndex;
+    ADOStoredProc1.Parameters[13].Value := edt_usuario.Text;
+    ADOStoredProc1.ExecProc;
+
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Close;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Open;
+    ////Unit_consultacli.form_consultacli.DBGridconsultacli.Refresh;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Refresh;
+
+    U_Aniversariantes.frm_aniversariantes.ADOQueryAniversariantes.Close;
+    U_Aniversariantes.frm_aniversariantes.ADOQueryAniversariantes.Open;
+    U_Aniversariantes.frm_aniversariantes.ADOQueryAniversariantes.Refresh;
+
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Close;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Open;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Refresh;
+
+    MessageDlg('Cliente cadastrado com sucesso !',mtInformation,[mbOK],0);
+
+    frm_cadastrarcli.Close;
+
+    U_Cadastrar_Cliente.frm_cadastrarcli.ADOQueryCadascli.Close;
+    U_Cadastrar_Cliente.frm_cadastrarcli.ADOQueryCadascli.Open;
+    U_Cadastrar_Cliente.frm_cadastrarcli.ADOQueryCadascli.Last;  //// aponto para o ultimo registro, que nesse caso é o que acabei de cadastrar
+
+    U_Login_Sistema.frm_loginsistema.ADOQueryLogin.Close;
+    U_Login_Sistema.frm_loginsistema.ADOQueryLogin.Open;
+    U_Login_Sistema.frm_loginsistema.ADOQueryLogin.Last;
+
+    ////ShowMessage(   'OI CAIPOIRA DO CÓDIGO E´.....' + IntToStr(Unit_cadastrocli.form_cadastrocli.ADOQueryCadasclicodigo_cliente.AsInteger) );
+    frm_cadasmedidas.ShowModal;
+    edt_nomecli.Clear;
+    edt_cpfcli.Clear;
+    edt_rgcli.Clear;
+    edt_enderecocli.Clear;
+    edt_emailcli.Clear;
+    edt_foto.Clear;
+    MaskEditdatanasc.Clear;
+    MaskEditdatamatric.Clear;
+    MaskEdittelefone.Clear;
+    ComboBoxTipoTreino.ItemIndex := -1;
+    Image_cadastrocli.Picture.LoadFromFile('C:\images.PNG');
+    ComboBoxsexocli.ItemIndex := -1;
+    ComboBoxstatuscli.ItemHeight := -1;
+    ADOQueryCadascli.Close;
+    ADOQueryCadascli.Open;
+    ADOQueryCadascli.Refresh;
+  end
+  finally
+
+  end;
+
+end;
+
+procedure Tfrm_cadastrarcli.FormShow(Sender: TObject);
+begin
+  Image_cadastrocli.Picture.LoadFromFile('C:\images.PNG');
+  edt_usuario.Text := IntToStr(U_Login_Sistema.frm_loginsistema.ADOQueryLoginCOD_USU.AsInteger);
+end;
+
+end.

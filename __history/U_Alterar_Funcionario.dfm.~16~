@@ -1,0 +1,415 @@
+object frm_alterafunc: Tfrm_alterafunc
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Alterar Funcion'#225'rio'
+  ClientHeight = 438
+  ClientWidth = 777
+  Color = clHighlight
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Image1: TImage
+    Left = 519
+    Top = 64
+    Width = 225
+    Height = 261
+    Picture.Data = {
+      0954506E67496D61676589504E470D0A1A0A0000000D49484452000000F50000
+      00CD08030000005746C6970000004E504C5445FFFFFFCCCCCC999999C9C9C993
+      9393CFCFCFDDDDDDFAFAFAFCFCFCF4F4F4909090F7F7F7E0E0E0D8D8D8ECECEC
+      A8A8A8EEEEEEE6E6E6C0C0C09F9F9FB3B3B3A5A5A5C3C3C3BCBCBC9D9D9D8A8A
+      8A5355DBFB000009594944415478DAED9D697BA23A148063944DD4B1EBDCFFFF
+      EFEECC9D76BA5817042F5B42802440122436391FFA585B85979C2D27DB0C9828
+      B3A96FC0525B6A4B6DA92DB5A5B6D496DA525B6A03C5529B2396DA1CB1D4E688
+      A536472CB53962A9CD114B6D8E586A73C4529B2396DA1CB1D4D7117FEE24F3E8
+      E465AF8FAE13C3283E7C676A7FE6EFBC4F98BF4E8AB7CA5F56C7F070B922FBB5
+      A853E2730A9CB0FE9EFE69B5B81AF955A87DF7C22326C967A76B805F817A1B7F
+      C24E624C9EACE67F6F9EDA7376FD911178181D6F993A587C752B36851B2CCFFB
+      5BA54E99A9C8B0FE2BFD7F46E51E8F3A846DE6943759F817E7028E397AE28159
+      343B9C21851D2E93DDAD51FB49DCE048C9A007632A49384F8E498B1CCEE1480E
+      7D24EACD47DD87C1947871E032F8FE3925AF7F2A59BFDF0E7553B921F4E25E56
+      1ACC8F49FD93E3A8F918D477B5809B3AE42111781B37DCFEF6F516A87D876C68
+      0882CBC0D60A677B921B2E23E5D6AD9C3A38133A9A329F056ED95F90DC102E54
+      0731D5D477EF6433093197DCE4F76C146BB962EA1571B3729EA8E61161F0A931
+      F5BABA53F9A8B3DD55B602971FDA5293D00A7C1099E9A8C55648EDC7841F5393
+      5E6CDFF04B08E7EA5CB93A6A3F3E577708157515BDA47A920B75D8CAA849E8F9
+      49D5B702E0C623602BA3266C5A6D3655C54275B6AD8A9A80069EDA5C6AFBA11C
+      5B11B54BF62B151A602EC109632BB21D35D4B58C6C546C35599A12EAEAAE10B6
+      2A1FDEC67655E4E42AA8FD36E278ADADC46BA8A05E539264D5D8954B5B29F068
+      0AA8B151C3CDBE6A75D5D8C455E44D5B9E3A3CA0DB491DAC97E05C4535360E13
+      D0972E2AC95363FD5E4400D4B015BB34077DB3BC8E4B5357416B993741781AAB
+      B53D14ABE5755C961AFB6F1896BDACF194BCF268B27E5C961A591B912C7A55FE
+      A4181B5F4C364593A4C6AE8C7CFCA3D936EED7C93A34496AE4CAB07E8F8B8D75
+      5CD2A1C951E394A97117A3D9367ECA7289A91C35BE89A6C68D858D2D4AAEB1A5
+      A85153530AB7149716747D5D9FE643A567B9C696A2C6090A2592B46DFBA9CB03
+      2D7A541871A4946A6C196AA46EF41A7D1BFBC78E3F5BE3FEBF1E17C58D2DE3C6
+      65A8F10D3854CB6DDB7607365CF669EC88F7A8AF405D7E9679FDB66D77600F6A
+      6C7099847AB3EBD2B5A1D8BEDB63A0DB3B97970DC5071A24A8912FE3F895A1B6
+      DDABB17B5C773C6A6C606B4E030DC4EED5D8385E3AC28980383552F0BC5BDD0B
+      9B50F262AA5536FBAAFE0C7A3576D9D196507171EA52D1A8BECCCD46A7D6F9D0
+      1CC5B6A3E0F2B9CC2624F9B3781BEF4F9CC68790D2BB42FE4C5CC585A951BA40
+      4D92726A18BE91FF88B17DB7D6465BF73FF64C532A35CEFE85BBD9C2D4A8FB43
+      55F09C1A6177F6C0FCCD0B0B9B4A8D557C2D3ABB5898BA54337AB02EA87B6383
+      EDA5EEE320488AF6A75373AF3D2A35F77997D4346C460FEC9E1C337ADE25B1EB
+      FE4D58D45C3D1B931A9B35357C206A36F6DA8BDC93F35AD5FD9CEA8B9E3F76E8
+      41D0A9C15CD2B045A99147A13F6E4CCD54727FFD5A84AECDBEF486CE053DA9A0
+      F4CDFFFC6251234513ED6E8A529705618669B9C4EC21966DA374056E5E8AF791
+      92FB49D9828F2F2C6A64D8A22562516A372A99A899824BCE2FECC4FEF15534D9
+      8FA28DFDAFF2FF7EFE665123C376046BA5A2D448C7E83D0F929A6DDB38392DBB
+      98DBCF84F82D7F0A0C6AD403117567A2D4E873F4EE5E8DBA0FB693B7F67311B7
+      CBB4F4EE83E9CD3A2E3F1675C7C3761BB3BCBB941CDCFDC97EFA05227CF837FD
+      B9CA149D458D546D21567716A4462E9C910A37A853ECE301F470696563C3C7F3
+      FC90FF85458D3A01824E5C90BAEC70B1B2A32635F08B4A20073BD7F160D608C0
+      2C6A144204BB5D82D4E8AA8CD0D1A22E349867DB4F99568387C6F775510B862E
+      416A143019F97F8BFAF117E8C086F9FBCF8D7E088BBA0C5DA299F875A8899B67
+      2939F43380D541676A94A430BC4993DABF64FFB78E382E0D5EE2F46510F5A346
+      DE54304D11A4463E9411395A6DBDC8781F235E00CBA3B47FEE478D22A76039E5
+      3AD44575ECE99597AE3CFCCEBFB1FEB9EF40FD8797A57D5F6A5E9676F7EDA84B
+      BB7EE125A78EFE762DE4C3F360CC2C333819403339D3CB870F8DD74430E6D6D2
+      F48ED743A9EFF3DC6CC1AA9C62ECE7C6D8875ED46279F8CFDF80818D0AC67AE7
+      E183FB5CF9B05D592C61636F4F5AF7B906F6AF918AA38220D3A579BB7E763D4D
+      FF7A582D257F2B1FE20A4B8DEC2E2AF1A9A7A9A50CAA9BE5F7573436D2713CF4
+      17F3C7B7F5AA9B0DA99196F7BFCADDFDE6AB8EDD31ACAF598D14A529F4D045A1
+      2E87B3C176FED6E1D2486CCDEAE1BDC73E2A80728CC35FBEF7C7D66CECA3EF38
+      17891D9756186CFE141334EE3E9A6586A64BD36C9C0B8F69C6BDA981BFC7CE67
+      B5BF4BAF7C39E6818FE3D2341BD3EC377EDD103C90D7104EC158AFF1EB5E7315
+      DAD8E18CEAFD98D8BACD55E8312F85CA7DFF4ED34A66E554B37929DD739018D8
+      C936A9DDECE6C47169BACD41EA9E6FC67E60C1FCEF325BDCE8055FABD93ECC7B
+      627497A6DB7C33EEDC423E75F6ACDC5335C3B0A89851959C4A3DE5DC42DE3CD2
+      4EEAFA2360A72B80428D3CCA24F348797377875173B0A3739B7AD239C3D5FCF0
+      7677CF7D781BF65DC1E711D05CDAD3A18536F1FCF0CEB50003C4073964DBA5B5
+      65E2B5005DEB3E44A47BF2E5E4EB3EF86B7C46C29E7C8D4FB5744F5D6377614F
+      BF9E8BB7764F0D767BAAAD066BF7D8EB346584E7D27458A7C95C932B271C25D7
+      624D6E7517C2DD9F41D87AACBFAE344EED326B06B62E6BEDD56D75D0071B6D27
+      36F5BE0AC41E1A4A759CEAD236B88838F51E1AC47E29AED24D61DAADADD17E29
+      CDBD7146C4D6696F9CFA3E482362EBB50F92DADDA848216C1B78815E7B5E113A
+      AED8A3D5B0B168B2BF19B112533536A1E4D57B9AEC65A77C5B410EB63EFB16D6
+      764A1D175BA73D2AC9FD4847B56DBDF62325F79E95A9E251B1ABE447B7BD676B
+      D86A035875A2847EFB0C1BBAA7F438FB878727BDF70F1F65AFF84DA5D29AEE15
+      0FEAE702283879883C2F45DB73011AD830906C6EF204249DCF8030F4BC0F7567
+      BBD48EF7D2FD6C1743CFF131F4CC2660E6F95CC0D0B3D800F5DCBDD9B2EBDCBD
+      AFCB4D9FBB0768672CE6270E72CF586C7DE0D6CE5804FCF3346388CED34CE6DF
+      E93CCD4C4C3C3BB5E436EE9CDC4C4C3C13391703CFBFCEC5C4B3CE0B70F3CEB5
+      AFC877DE67E1C1D1A055F1CBEA185E8DF8DAD425FBDC4983F4C9CB5E1FDD3474
+      47F11579A7A2D6412CB53962A9CD114B6D8E586A73C4529B2396DA1CB1D4E688
+      A536472CB53962A9CD114B6D8E586A73C4529B2396DA1CB1D4E688A53647CCA4
+      FE1FC11DC919C4F986DE0000000049454E44AE426082}
+    Stretch = True
+  end
+  object lbl_nomefunc: TLabel
+    Left = 27
+    Top = 75
+    Width = 34
+    Height = 13
+    Caption = 'Nome :'
+  end
+  object lbl_enderecofunc: TLabel
+    Left = 27
+    Top = 123
+    Width = 52
+    Height = 13
+    Caption = 'Endere'#231'o :'
+  end
+  object lbl_cpffunc: TLabel
+    Left = 27
+    Top = 171
+    Width = 26
+    Height = 13
+    Caption = 'CPF :'
+  end
+  object lbl_rgfunc: TLabel
+    Left = 280
+    Top = 171
+    Width = 21
+    Height = 13
+    Caption = 'RG :'
+  end
+  object lbl_telefonefunc: TLabel
+    Left = 27
+    Top = 219
+    Width = 49
+    Height = 13
+    Caption = 'Telefone :'
+  end
+  object lbl_alterdatanascfunc: TLabel
+    Left = 267
+    Top = 219
+    Width = 88
+    Height = 13
+    Caption = 'Data Nascimento :'
+  end
+  object lbl_emailfunc: TLabel
+    Left = 27
+    Top = 267
+    Width = 35
+    Height = 13
+    Caption = 'E-mail :'
+  end
+  object Image_AlterFunc: TImage
+    Left = 519
+    Top = 64
+    Width = 225
+    Height = 261
+    Stretch = True
+  end
+  object lbl_sexofunc: TLabel
+    Left = 27
+    Top = 320
+    Width = 28
+    Height = 13
+    Caption = 'Sexo:'
+  end
+  object lbl_statusfunc: TLabel
+    Left = 280
+    Top = 320
+    Width = 35
+    Height = 13
+    Caption = 'Status:'
+  end
+  object edt_nomefunc: TEdit
+    Left = 82
+    Top = 72
+    Width = 417
+    Height = 21
+    TabOrder = 0
+  end
+  object edt_enderecofunc: TEdit
+    Left = 85
+    Top = 120
+    Width = 417
+    Height = 21
+    TabOrder = 1
+  end
+  object edt_cpffunc: TEdit
+    Left = 82
+    Top = 168
+    Width = 186
+    Height = 21
+    TabOrder = 2
+  end
+  object edt_rgfunc: TEdit
+    Left = 307
+    Top = 168
+    Width = 192
+    Height = 21
+    TabOrder = 3
+  end
+  object edt_emailfunc: TEdit
+    Left = 82
+    Top = 264
+    Width = 417
+    Height = 21
+    TabOrder = 4
+  end
+  object btn_carregarfotofunc: TButton
+    Left = 600
+    Top = 339
+    Width = 91
+    Height = 25
+    Caption = 'Carregar Foto'
+    TabOrder = 5
+    OnClick = btn_carregarfotofuncClick
+  end
+  object btn_salvarcadfun: TButton
+    Left = 136
+    Top = 392
+    Width = 124
+    Height = 33
+    Caption = 'Salvar'
+    TabOrder = 6
+    OnClick = btn_salvarcadfunClick
+  end
+  object btn_limpar: TButton
+    Left = 343
+    Top = 392
+    Width = 102
+    Height = 33
+    Caption = 'Limpar'
+    TabOrder = 7
+  end
+  object edt_foto: TEdit
+    Left = 536
+    Top = 362
+    Width = 208
+    Height = 21
+    TabOrder = 8
+    Visible = False
+  end
+  object MaskEdittel: TMaskEdit
+    Left = 82
+    Top = 211
+    Width = 87
+    Height = 21
+    EditMask = '!\(99\)00000-0000;1;_'
+    MaxLength = 14
+    TabOrder = 9
+    Text = '(  )     -    '
+  end
+  object ComboBoxsexofunc: TComboBox
+    Left = 74
+    Top = 312
+    Width = 145
+    Height = 21
+    TabOrder = 10
+    Items.Strings = (
+      'Masculino'
+      'Feminino')
+  end
+  object ComboBoxstatusfunc: TComboBox
+    Left = 343
+    Top = 312
+    Width = 145
+    Height = 21
+    TabOrder = 11
+    Items.Strings = (
+      'Ativo'
+      'Inativo')
+  end
+  object edt_codfunc: TEdit
+    Left = 112
+    Top = 24
+    Width = 121
+    Height = 21
+    TabOrder = 12
+    Visible = False
+  end
+  object MaskEditdatapag: TMaskEdit
+    Left = 360
+    Top = 216
+    Width = 120
+    Height = 21
+    TabOrder = 13
+  end
+  object edt_codusu: TEdit
+    Left = 267
+    Top = 24
+    Width = 121
+    Height = 21
+    TabOrder = 14
+    Visible = False
+  end
+  object ADOConnectionAlterFunc: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=TCC;Data Source=(local);'
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 552
+    Top = 16
+  end
+  object ADOStoredProcAlterFunc: TADOStoredProc
+    Connection = ADOConnectionAlterFunc
+    ProcedureName = 'SP_ALTERFUNC;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+        Value = Null
+      end
+      item
+        Name = '@COD_FUNC'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+        Value = Null
+      end
+      item
+        Name = '@NOME'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = '@END_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = '@CPF_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 11
+        Value = Null
+      end
+      item
+        Name = '@RG_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 12
+        Value = Null
+      end
+      item
+        Name = '@TEL'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 15
+        Value = Null
+      end
+      item
+        Name = '@DTNASC_FUNC'
+        Attributes = [paNullable]
+        DataType = ftWideString
+        Size = 10
+        Value = Null
+      end
+      item
+        Name = '@EML_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 50
+        Value = Null
+      end
+      item
+        Name = '@STA_FUNC'
+        Attributes = [paNullable]
+        DataType = ftBoolean
+        Value = Null
+      end
+      item
+        Name = '@SX_FUNC'
+        Attributes = [paNullable]
+        DataType = ftBoolean
+        Value = Null
+      end
+      item
+        Name = '@FT_FUNC'
+        Attributes = [paNullable]
+        DataType = ftString
+        Size = 255
+        Value = Null
+      end
+      item
+        Name = '@COD_USU'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+        Value = Null
+      end>
+    Left = 664
+    Top = 16
+  end
+  object OpenPictureDialogAlterFunc: TOpenPictureDialog
+    Filter = 
+      'All (*.gif;*.png;*.jpg;*.jpeg;*.bmp;*||GIF Image (*.gif)|*.gif|P' +
+      'ortable Network Graphics (*.png)|*.png|JPEG Image File (*.jpg)|*' +
+      '.jpg|JPEG Image File (*.jpeg)|*.jpeg|Bitmaps (*.bmp)|*.bmp|TIFF ' +
+      'Images (*.tif)|*.tif|TIFF Images (*.tiff)|*.tiff|Icons (*.ico)|*' +
+      '.ico|Enhanced Metafiles (*.emf)|*.emf|Metafiles (*.wmf)|*.wmf'
+    Left = 456
+    Top = 24
+  end
+end

@@ -1,0 +1,288 @@
+object frm_visualizarcli: Tfrm_visualizarcli
+  Left = 0
+  Top = 0
+  Caption = 'Cliente'
+  ClientHeight = 555
+  ClientWidth = 916
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_nomecli: TLabel
+    Left = 46
+    Top = 197
+    Width = 34
+    Height = 13
+    Caption = 'Nome :'
+  end
+  object lbl_datanasccli: TLabel
+    Left = 409
+    Top = 240
+    Width = 88
+    Height = 13
+    Caption = 'Data Nascimento :'
+  end
+  object lbl_cpfcli: TLabel
+    Left = 46
+    Top = 240
+    Width = 26
+    Height = 13
+    Caption = 'CPF :'
+  end
+  object lbl_rgcli: TLabel
+    Left = 235
+    Top = 240
+    Width = 21
+    Height = 13
+    Caption = 'RG :'
+  end
+  object lbl_enderecocli: TLabel
+    Left = 46
+    Top = 288
+    Width = 52
+    Height = 13
+    Caption = 'Endere'#231'o :'
+  end
+  object lbl_telefonecli: TLabel
+    Left = 46
+    Top = 344
+    Width = 49
+    Height = 13
+    Caption = 'Telefone :'
+  end
+  object lbl_datamatriculacli: TLabel
+    Left = 406
+    Top = 339
+    Width = 91
+    Height = 13
+    Caption = 'Data de Matr'#237'cula :'
+  end
+  object lbl_emailcli: TLabel
+    Left = 46
+    Top = 384
+    Width = 35
+    Height = 13
+    Caption = 'E-mail :'
+  end
+  object Image_cli: TImage
+    Left = 660
+    Top = 194
+    Width = 243
+    Height = 254
+    Stretch = True
+  end
+  object lbl_sexocli: TLabel
+    Left = 46
+    Top = 430
+    Width = 28
+    Height = 13
+    Caption = 'Sexo:'
+  end
+  object lbl_tipot: TLabel
+    Left = 406
+    Top = 430
+    Width = 72
+    Height = 13
+    Caption = 'Tipo de Treino:'
+  end
+  object edt_nomecli: TEdit
+    Left = 104
+    Top = 194
+    Width = 503
+    Height = 21
+    ReadOnly = True
+    TabOrder = 0
+  end
+  object edt_enderecocli: TEdit
+    Left = 104
+    Top = 285
+    Width = 503
+    Height = 21
+    ReadOnly = True
+    TabOrder = 1
+  end
+  object edt_emailcli: TEdit
+    Left = 104
+    Top = 381
+    Width = 503
+    Height = 21
+    ReadOnly = True
+    TabOrder = 2
+  end
+  object MaskEditdatanasc: TMaskEdit
+    Left = 503
+    Top = 237
+    Width = 105
+    Height = 21
+    EditMask = '!99/99/9999;1;_'
+    MaxLength = 10
+    ReadOnly = True
+    TabOrder = 3
+    Text = '  /  /    '
+  end
+  object MaskEditdatamatric: TMaskEdit
+    Left = 503
+    Top = 336
+    Width = 106
+    Height = 21
+    EditMask = '!99/99/9999;1;_'
+    MaxLength = 10
+    ReadOnly = True
+    TabOrder = 4
+    Text = '  /  /    '
+  end
+  object MaskEdittelefone: TMaskEdit
+    Left = 104
+    Top = 336
+    Width = 122
+    Height = 21
+    EditMask = '!\(99\)00000-0000;1;_'
+    MaxLength = 14
+    ReadOnly = True
+    TabOrder = 5
+    Text = '(  )     -    '
+  end
+  object edt_foto: TEdit
+    Left = 684
+    Top = 150
+    Width = 199
+    Height = 21
+    ReadOnly = True
+    TabOrder = 6
+  end
+  object ComboBoxsexocli: TComboBox
+    Left = 104
+    Top = 427
+    Width = 143
+    Height = 21
+    TabOrder = 7
+    Items.Strings = (
+      'Masculino'
+      'Feminino')
+  end
+  object ComboBoxstatuscli: TComboBox
+    Left = 372
+    Top = 516
+    Width = 143
+    Height = 21
+    TabOrder = 8
+    Visible = False
+    Items.Strings = (
+      'Ativo'
+      'Inativo')
+  end
+  object ComboBoxTipoTreino: TComboBox
+    Left = 503
+    Top = 427
+    Width = 108
+    Height = 21
+    TabOrder = 9
+    Items.Strings = (
+      'Perca de Peso '
+      'Ganho de Massa')
+  end
+  object MaskEdit1: TMaskEdit
+    Left = 104
+    Top = 237
+    Width = 122
+    Height = 21
+    EditMask = '!999.999.999-99;1;_'
+    MaxLength = 14
+    ReadOnly = True
+    TabOrder = 10
+    Text = '   .   .   -  '
+  end
+  object MaskEditRG: TMaskEdit
+    Left = 262
+    Top = 237
+    Width = 126
+    Height = 21
+    EditMask = '!99.999.999-A;1;_'
+    MaxLength = 12
+    ReadOnly = True
+    TabOrder = 11
+    Text = '  .   .   - '
+  end
+  object ADOConnectionCadasCli: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=TCC;Data Source=(local);Use Procedure f' +
+      'or Prepare=1;Auto Translate=True;Packet Size=4096;Workstation ID' +
+      '=BP746017;Use Encryption for Data=False;Tag with column collatio' +
+      'n when possible=False;'
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 24
+    Top = 496
+  end
+  object ADOQueryCadascli: TADOQuery
+    Connection = ADOConnectionCadasCli
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select*from TB_CLIENTES')
+    Left = 168
+    Top = 496
+    object ADOQueryCadascliCOD_CLI: TAutoIncField
+      FieldName = 'COD_CLI'
+      ReadOnly = True
+    end
+    object ADOQueryCadascliNM_CLI: TStringField
+      FieldName = 'NM_CLI'
+      Size = 50
+    end
+    object ADOQueryCadascliEND_CLI: TStringField
+      FieldName = 'END_CLI'
+      Size = 50
+    end
+    object ADOQueryCadascliCPF_CLI: TStringField
+      FieldName = 'CPF_CLI'
+      Size = 15
+    end
+    object ADOQueryCadascliRG_CLI: TStringField
+      FieldName = 'RG_CLI'
+      Size = 15
+    end
+    object ADOQueryCadascliTEL_CLI: TStringField
+      FieldName = 'TEL_CLI'
+      Size = 15
+    end
+    object ADOQueryCadascliDTMATRI_CLI: TWideStringField
+      FieldName = 'DTMATRI_CLI'
+      Size = 10
+    end
+    object ADOQueryCadascliDTNASC_CLI: TWideStringField
+      FieldName = 'DTNASC_CLI'
+      Size = 10
+    end
+    object ADOQueryCadascliEML_CLI: TStringField
+      FieldName = 'EML_CLI'
+      Size = 50
+    end
+    object ADOQueryCadascliSTA_CLI: TBooleanField
+      FieldName = 'STA_CLI'
+    end
+    object ADOQueryCadascliSX_CLI: TStringField
+      FieldName = 'SX_CLI'
+      Size = 30
+    end
+    object ADOQueryCadascliFT_CLI: TStringField
+      FieldName = 'FT_CLI'
+      Size = 255
+    end
+    object ADOQueryCadascliTPT_CLI: TStringField
+      FieldName = 'TPT_CLI'
+      Size = 30
+    end
+    object ADOQueryCadascliCOD_USU: TIntegerField
+      FieldName = 'COD_USU'
+    end
+  end
+end

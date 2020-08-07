@@ -1,0 +1,40 @@
+program P_TCC_ULTIMATE;
+
+uses
+  Forms,
+  U_Login_Sistema in 'U_Login_Sistema.pas' {frm_loginsistema},
+  U_Principal in 'U_Principal.pas' {frm_principal},
+  U_Cadastrar in 'U_Cadastrar.pas' {frm_cadastrar},
+  U_Cadastrar_Cliente in 'U_Cadastrar_Cliente.pas' {frm_cadastrarcli},
+  U_Cadastrar_Medidas in 'U_Cadastrar_Medidas.pas' {frm_cadasmedidas},
+  U_Cadastrar_Funcionario in 'U_Cadastrar_Funcionario.pas' {frm_cadasfunc},
+  U_Cadastrar_Login in 'U_Cadastrar_Login.pas' {frm_cadaslogin},
+  U_Consultar_Cliente in 'U_Consultar_Cliente.pas' {frm_consultacli},
+  U_Consultar in 'U_Consultar.pas' {frm_consultar},
+  U_Consultar_Funcionario in 'U_Consultar_Funcionario.pas' {frm_consultafunc},
+  U_Cadastrar_Despesas in 'U_Cadastrar_Despesas.pas' {frm_cadasdespesas},
+  U_Despesas in 'U_Despesas.pas' {frm_despesas},
+  U_Consultar_Despesas in 'U_Consultar_Despesas.pas' {frm_consultadespesas},
+  U_Alterar_Funcionario in 'U_Alterar_Funcionario.pas' {frm_alterafunc};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(Tfrm_loginsistema, frm_loginsistema);
+  Application.CreateForm(Tfrm_principal, frm_principal);
+  Application.CreateForm(Tfrm_cadastrar, frm_cadastrar);
+  Application.CreateForm(Tfrm_cadastrarcli, frm_cadastrarcli);
+  Application.CreateForm(Tfrm_cadasmedidas, frm_cadasmedidas);
+  Application.CreateForm(Tfrm_cadasfunc, frm_cadasfunc);
+  Application.CreateForm(Tfrm_cadaslogin, frm_cadaslogin);
+  Application.CreateForm(Tfrm_consultacli, frm_consultacli);
+  Application.CreateForm(Tfrm_consultar, frm_consultar);
+  Application.CreateForm(Tfrm_consultafunc, frm_consultafunc);
+  Application.CreateForm(Tfrm_cadasdespesas, frm_cadasdespesas);
+  Application.CreateForm(Tfrm_despesas, frm_despesas);
+  Application.CreateForm(Tfrm_consultadespesas, frm_consultadespesas);
+  Application.CreateForm(Tfrm_alterafunc, frm_alterafunc);
+  Application.Run;
+end.

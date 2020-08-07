@@ -1,0 +1,80 @@
+program P_TCC_ULTIMATE;
+
+uses
+  Forms,
+  U_Login_Sistema in 'U_Login_Sistema.pas' {frm_loginsistema},
+  U_Principal in 'U_Principal.pas' {frm_principal},
+  U_Cadastrar in 'U_Cadastrar.pas' {frm_cadastrar},
+  U_Cadastrar_Cliente in 'U_Cadastrar_Cliente.pas' {frm_cadastrarcli},
+  U_Cadastrar_Medidas in 'U_Cadastrar_Medidas.pas' {frm_cadasmedidas},
+  U_Cadastrar_Funcionario in 'U_Cadastrar_Funcionario.pas' {frm_cadasfunc},
+  U_Cadastrar_Usuario in 'U_Cadastrar_Usuario.pas' {frm_cadasusu},
+  U_Consultar_Cliente in 'U_Consultar_Cliente.pas' {frm_consultacli},
+  U_Consultar in 'U_Consultar.pas' {frm_consultar},
+  U_Consultar_Funcionario in 'U_Consultar_Funcionario.pas' {frm_consultafunc},
+  U_Cadastrar_Despesas in 'U_Cadastrar_Despesas.pas' {frm_cadasdespesas},
+  U_Despesas in 'U_Despesas.pas' {frm_despesas},
+  U_Consultar_Despesas in 'U_Consultar_Despesas.pas' {frm_consultadespesas},
+  U_Alterar_Funcionario in 'U_Alterar_Funcionario.pas' {frm_alterafunc},
+  U_Alterar_Cliente in 'U_Alterar_Cliente.pas' {frm_altercli},
+  U_Excluir_Usuario in 'U_Excluir_Usuario.pas' {Form1},
+  U_Consultar_Usuário in 'U_Consultar_Usuário.pas' {frm_consultusuario},
+  U_Cadastrar_Mensalidades in 'U_Cadastrar_Mensalidades.pas' {frm_cadasmensalidades},
+  U_Consultar_Mensalidades in 'U_Consultar_Mensalidades.pas' {frm_consultmensa},
+  U_Alterar_Mensalidade in 'U_Alterar_Mensalidade.pas' {frm_alterarmensa},
+  U_Calcular_IMC in 'U_Calcular_IMC.pas' {frm_calimc},
+  U_Aniversariantes in 'U_Aniversariantes.pas' {frm_aniversariantes},
+  U_Verifica_CPF in 'U_Verifica_CPF.pas' {Form3},
+  U_Relatorio in 'U_Relatorio.pas' {frm_relatorios},
+  U_Esta in 'U_Esta.pas' {frm_esta},
+  U_Esqueceu_Senha in 'U_Esqueceu_Senha.pas' {frm_esqueceusuasenha},
+  U_Consultar_Medidas in 'U_Consultar_Medidas.pas' {frm_consultarmedi},
+  U_Opcoess in 'U_Opcoess.pas' {frm_opcoess},
+  U_Medidas in 'U_Medidas.pas' {frm_medidas},
+  U_Cadastrar_Novas_Medidas in 'U_Cadastrar_Novas_Medidas.pas' {frm_cadasnovasmedidas},
+  U_calendario in 'U_calendario.pas' {frm_calendario},
+  U_Visualizar_Cliente in 'U_Visualizar_Cliente.pas' {frm_visualizarcli},
+  U_Info_Sistema in 'U_Info_Sistema.pas' {frm_infosistema},
+  U_Relatorio_Func_Comum in 'U_Relatorio_Func_Comum.pas' {frm_relatofunccomum};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(Tfrm_loginsistema, frm_loginsistema);
+  Application.CreateForm(Tfrm_principal, frm_principal);
+  Application.CreateForm(Tfrm_cadastrar, frm_cadastrar);
+  Application.CreateForm(Tfrm_cadastrarcli, frm_cadastrarcli);
+  Application.CreateForm(Tfrm_cadasmedidas, frm_cadasmedidas);
+  Application.CreateForm(Tfrm_cadasfunc, frm_cadasfunc);
+  Application.CreateForm(Tfrm_cadasusu, frm_cadasusu);
+  Application.CreateForm(Tfrm_consultacli, frm_consultacli);
+  Application.CreateForm(Tfrm_consultar, frm_consultar);
+  Application.CreateForm(Tfrm_consultafunc, frm_consultafunc);
+  Application.CreateForm(Tfrm_cadasdespesas, frm_cadasdespesas);
+  Application.CreateForm(Tfrm_despesas, frm_despesas);
+  Application.CreateForm(Tfrm_consultadespesas, frm_consultadespesas);
+  Application.CreateForm(Tfrm_alterafunc, frm_alterafunc);
+  Application.CreateForm(Tfrm_altercli, frm_altercli);
+  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(Tfrm_consultusuario, frm_consultusuario);
+  Application.CreateForm(Tfrm_cadasmensalidades, frm_cadasmensalidades);
+  Application.CreateForm(Tfrm_consultmensa, frm_consultmensa);
+  Application.CreateForm(Tfrm_alterarmensa, frm_alterarmensa);
+  Application.CreateForm(Tfrm_calimc, frm_calimc);
+  Application.CreateForm(Tfrm_aniversariantes, frm_aniversariantes);
+  Application.CreateForm(TForm3, Form3);
+  Application.CreateForm(Tfrm_relatorios, frm_relatorios);
+  Application.CreateForm(Tfrm_esta, frm_esta);
+  Application.CreateForm(Tfrm_esqueceusuasenha, frm_esqueceusuasenha);
+  Application.CreateForm(Tfrm_consultarmedi, frm_consultarmedi);
+  Application.CreateForm(Tfrm_opcoess, frm_opcoess);
+  Application.CreateForm(Tfrm_medidas, frm_medidas);
+  Application.CreateForm(Tfrm_cadasnovasmedidas, frm_cadasnovasmedidas);
+  Application.CreateForm(Tfrm_calendario, frm_calendario);
+  Application.CreateForm(Tfrm_visualizarcli, frm_visualizarcli);
+  Application.CreateForm(Tfrm_infosistema, frm_infosistema);
+  Application.CreateForm(Tfrm_relatofunccomum, frm_relatofunccomum);
+  Application.Run;
+end.

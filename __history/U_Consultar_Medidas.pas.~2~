@@ -1,0 +1,51 @@
+unit U_Consultar_Medidas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, pngimage, ExtCtrls, Mask, StdCtrls;
+
+type
+  Tfrm_consultarmedi = class(TForm)
+    Editcodigo: TEdit;
+    edt_nomeclimedidas: TEdit;
+    lbl_nomeclimedidas: TLabel;
+    lbl_peso: TLabel;
+    edt_peso: TEdit;
+    edt_altura: TEdit;
+    lbl_altura: TLabel;
+    edt_biceps: TEdit;
+    lbl_biceps: TLabel;
+    edt_triceps: TEdit;
+    lbl_triceps: TLabel;
+    edt_peitoral: TEdit;
+    lbl_peitoral: TLabel;
+    edt_quadril: TEdit;
+    lbl_quadril: TLabel;
+    edt_cintura: TEdit;
+    lbl_cintura: TLabel;
+    edt_coxa: TEdit;
+    lbl_coxa: TLabel;
+    edt_ombro: TEdit;
+    lbl_ombro: TLabel;
+    edt_panturrilha: TEdit;
+    lbl_panturrilha: TLabel;
+    MaskEditdataavaliacao: TMaskEdit;
+    lbl_dataavaliacaofisica: TLabel;
+    Image1: TImage;
+    Image2: TImage;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_consultarmedi: Tfrm_consultarmedi;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,87 @@
+object frm_cadaslogin: Tfrm_cadaslogin
+  Left = 0
+  Top = 0
+  Caption = 'Cadastrar Login'
+  ClientHeight = 369
+  ClientWidth = 361
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbl_nomelogin: TLabel
+    Left = 71
+    Top = 61
+    Width = 34
+    Height = 13
+    Caption = 'Nome :'
+  end
+  object lbl_login: TLabel
+    Left = 68
+    Top = 112
+    Width = 32
+    Height = 13
+    Caption = 'Login :'
+  end
+  object lbl_senhalogin: TLabel
+    Left = 68
+    Top = 155
+    Width = 37
+    Height = 13
+    Caption = 'Senha :'
+  end
+  object edt_nomelogin: TEdit
+    Left = 111
+    Top = 53
+    Width = 194
+    Height = 21
+    TabOrder = 0
+  end
+  object edt_login: TEdit
+    Left = 111
+    Top = 104
+    Width = 194
+    Height = 21
+    TabOrder = 1
+  end
+  object edt_senhalogin: TEdit
+    Left = 111
+    Top = 152
+    Width = 194
+    Height = 21
+    TabOrder = 2
+  end
+  object bnt_salvarlogin: TButton
+    Left = 68
+    Top = 316
+    Width = 103
+    Height = 25
+    Caption = 'Salvar Login'
+    TabOrder = 3
+  end
+  object bnt_cancelarlogin: TButton
+    Left = 200
+    Top = 316
+    Width = 105
+    Height = 25
+    Caption = 'Cancelar '
+    TabOrder = 4
+    OnClick = bnt_cancelarloginClick
+  end
+  object rdg_tipousuario: TRadioGroup
+    Left = 84
+    Top = 211
+    Width = 205
+    Height = 70
+    Caption = 'Tipo de Usu'#225'rio :'
+    Columns = 2
+    Items.Strings = (
+      'Admin'
+      'Comum')
+    TabOrder = 5
+  end
+end

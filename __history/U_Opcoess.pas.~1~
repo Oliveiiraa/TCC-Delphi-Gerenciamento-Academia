@@ -1,0 +1,31 @@
+unit U_Opcoess;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, pngimage, ExtCtrls;
+
+type
+  Tfrm_opcoess = class(TForm)
+    Image1: TImage;
+    Image2: TImage;
+    Image4: TImage;
+    Image5: TImage;
+    Image6: TImage;
+    Image7: TImage;
+    Image3: TImage;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_opcoess: Tfrm_opcoess;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,264 @@
+unit U_Alterar_Cliente;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtDlgs, DB, ADODB, StdCtrls, Mask, ExtCtrls,Clipbrd ,pngimage;
+
+type
+  Tfrm_altercli = class(TForm)
+    lbl_nomecli: TLabel;
+    lbl_datanasccli: TLabel;
+    lbl_cpfcli: TLabel;
+    lbl_rgcli: TLabel;
+    lbl_enderecocli: TLabel;
+    lbl_telefonecli: TLabel;
+    lbl_datamatriculacli: TLabel;
+    lbl_emailcli: TLabel;
+    Image_AlterCli: TImage;
+    lbl_sexocli: TLabel;
+    edt_nomecli: TEdit;
+    edt_enderecocli: TEdit;
+    edt_emailcli: TEdit;
+    btn_carrerfotocli: TButton;
+    btn_salvarcasdastrocli: TButton;
+    MaskEditdatanasc: TMaskEdit;
+    MaskEditdatamatric: TMaskEdit;
+    MaskEdittelefone: TMaskEdit;
+    edt_foto: TEdit;
+    ComboBoxsexocli: TComboBox;
+    ComboBoxstatuscli: TComboBox;
+    edt_usuario: TEdit;
+    ADOConnectionAlterCli: TADOConnection;
+    ADOStoredProcAlterCli: TADOStoredProc;
+    ADOQueryAlterCli: TADOQuery;
+    OpenPictureDialogAlterCli: TOpenPictureDialog;
+    lbl_stacli: TLabel;
+    lbl_tipot: TLabel;
+    ComboBoxTipoTreino: TComboBox;
+    edt_cod: TEdit;
+    Image1: TImage;
+    Image3: TImage;
+    Image2: TImage;
+    Image6: TImage;
+    Image4: TImage;
+    Image5: TImage;
+    MaskEditRGCliAlter: TMaskEdit;
+    MaskEditCPFCliAlter: TMaskEdit;
+    ADOQueryMedidas: TADOQuery;
+    ADOQueryMedidasCOD_MD: TAutoIncField;
+    ADOQueryMedidasDTAVF_MD: TWideStringField;
+    ADOQueryMedidasPS_MD: TBCDField;
+    ADOQueryMedidasAT_MD: TBCDField;
+    ADOQueryMedidasBC_MD: TBCDField;
+    ADOQueryMedidasTC_MD: TBCDField;
+    ADOQueryMedidasPT_MD: TBCDField;
+    ADOQueryMedidasQD_MD: TBCDField;
+    ADOQueryMedidasCT_MD: TBCDField;
+    ADOQueryMedidasCX_MD: TBCDField;
+    ADOQueryMedidasOB_MD: TBCDField;
+    ADOQueryMedidasPTR_MD: TBCDField;
+    ADOQueryMedidasCOD_CLI: TIntegerField;
+    ADOQueryAlterCliCOD_CLI: TAutoIncField;
+    ADOQueryAlterCliNM_CLI: TStringField;
+    ADOQueryAlterCliEND_CLI: TStringField;
+    ADOQueryAlterCliCPF_CLI: TStringField;
+    ADOQueryAlterCliRG_CLI: TStringField;
+    ADOQueryAlterCliTEL_CLI: TStringField;
+    ADOQueryAlterCliDTMATRI_CLI: TWideStringField;
+    ADOQueryAlterCliDTNASC_CLI: TWideStringField;
+    ADOQueryAlterCliEML_CLI: TStringField;
+    ADOQueryAlterCliSTA_CLI: TBooleanField;
+    ADOQueryAlterCliSX_CLI: TStringField;
+    ADOQueryAlterCliFT_CLI: TStringField;
+    ADOQueryAlterCliTPT_CLI: TStringField;
+    ADOQueryAlterCliCOD_USU: TIntegerField;
+    procedure FormShow(Sender: TObject);
+    procedure btn_carrerfotocliClick(Sender: TObject);
+    procedure btn_salvarcasdastrocliClick(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+    procedure img_altermedidasClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_altercli: Tfrm_altercli;
+
+implementation
+
+uses U_Consultar_Cliente, U_Cadastrar_Mensalidades, U_Consultar_Medidas;
+
+{$R *.dfm}
+
+procedure Tfrm_altercli.btn_carrerfotocliClick(Sender: TObject);
+begin
+  if OpenPictureDialogAlterCli.Execute then
+  begin
+    Image_AlterCli.Picture.LoadFromFile(OpenPictureDialogAlterCli.FileName);
+    edt_foto.Text := OpenPictureDialogAlterCli.FileName;
+    Image_AlterCli.Visible := True;
+  end;
+end;
+
+procedure Tfrm_altercli.btn_salvarcasdastrocliClick(Sender: TObject);
+var
+  anonasc,mesnasc,dianasc,anomatri,diamatri,mesmatri : String;
+begin
+  try
+  begin
+    ADOStoredProcAlterCli.Parameters[1].Value := edt_cod.Text;
+    ADOStoredProcAlterCli.Parameters[2].Value := edt_nomecli.Text;
+    ADOStoredProcAlterCli.Parameters[3].Value := edt_enderecocli.Text;
+    ADOStoredProcAlterCli.Parameters[4].Value := MaskEditCPFCliAlter.Text;
+    ADOStoredProcAlterCli.Parameters[5].Value := MaskEditRGCliAlter.Text;
+    ADOStoredProcAlterCli.Parameters[6].Value := MaskEdittelefone.Text;
+    anonasc := copy(MaskEditdatamatric.Text,7,4);
+    mesnasc := copy(MaskEditdatamatric.Text,4,2);
+    dianasc := copy(MaskEditdatamatric.Text,1,2);
+    ADOStoredProcAlterCli.Parameters[7].Value := anonasc + '/' + mesnasc + '/' + dianasc;
+    anomatri := copy(MaskEditdatanasc.Text,7,4);
+    mesmatri := copy(MaskEditdatanasc.Text,4,2);
+    diamatri := copy(MaskEditdatanasc.Text,1,2);
+    ADOStoredProcAlterCli.Parameters[8].Value := anomatri + '/' + mesmatri + '/' + diamatri;
+    ADOStoredProcAlterCli.Parameters[9].Value := edt_emailcli.Text;
+    ADOStoredProcAlterCli.Parameters[10].Value := ComboBoxstatuscli.ItemIndex;
+    ADOStoredProcAlterCli.Parameters[11].Value := ComboBoxsexocli.ItemIndex;
+    ADOStoredProcAlterCli.Parameters[12].Value := edt_foto.Text;
+    ADOStoredProcAlterCli.Parameters[13].Value := ComboBoxTipoTreino.ItemIndex;
+    ADOStoredProcAlterCli.Parameters[14].Value := edt_usuario.Text;
+
+    ADOStoredProcAlterCli.ExecProc;
+
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Close;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Open;
+    ////Unit_consultacli.form_consultacli.DBGridconsultacli.Refresh;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Refresh;
+
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Close;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Open;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Refresh;
+
+    MessageDlg('Cliente cadastrado com sucesso !',mtInformation,[mbOK],0);
+  end;
+  finally
+
+  end;
+end;
+
+procedure Tfrm_altercli.FormShow(Sender: TObject);
+begin
+  if (edt_foto.Text = EmptyStr) and (Image_AlterCli.Visible = false) then
+  begin
+    Image_AlterCli.Visible := True;
+    Image_AlterCli.Picture.LoadFromFile('C:\images.PNG');
+  end
+  else if (edt_foto.Text = EmptyStr) and (Image_AlterCli.Visible = True) then
+  begin
+    Image_AlterCli.Picture.LoadFromFile('C:\images.PNG');
+  end
+  else
+  begin
+    Image_AlterCli.Visible := True;
+    Image_AlterCli.Picture.LoadFromFile(edt_foto.Text);
+  end;
+end;
+
+procedure Tfrm_altercli.Image2Click(Sender: TObject);
+begin
+    if OpenPictureDialogAlterCli.Execute then
+  begin
+    Image_AlterCli.Picture.LoadFromFile(OpenPictureDialogAlterCli.FileName);
+    edt_foto.Text := OpenPictureDialogAlterCli.FileName;
+    Image_AlterCli.Visible := True;
+  end;
+end;
+
+procedure Tfrm_altercli.Image3Click(Sender: TObject);
+var
+  anonasc,mesnasc,dianasc,anomatri,diamatri,mesmatri : String;
+begin
+   try
+  begin
+    ADOStoredProcAlterCli.Parameters[1].Value := edt_cod.Text;
+    ADOStoredProcAlterCli.Parameters[2].Value := edt_nomecli.Text;
+    ADOStoredProcAlterCli.Parameters[3].Value := edt_enderecocli.Text;
+    ADOStoredProcAlterCli.Parameters[4].Value := MaskEditCPFCliAlter.Text;
+    ADOStoredProcAlterCli.Parameters[5].Value := MaskEditRGCliAlter.Text;
+    ADOStoredProcAlterCli.Parameters[6].Value := MaskEdittelefone.Text;
+    anonasc := copy(MaskEditdatamatric.Text,7,4);
+    mesnasc := copy(MaskEditdatamatric.Text,4,2);
+    dianasc := copy(MaskEditdatamatric.Text,1,2);
+    ADOStoredProcAlterCli.Parameters[7].Value := anonasc + '/' + mesnasc + '/' + dianasc;
+    anomatri := copy(MaskEditdatanasc.Text,7,4);
+    mesmatri := copy(MaskEditdatanasc.Text,4,2);
+    diamatri := copy(MaskEditdatanasc.Text,1,2);
+    ADOStoredProcAlterCli.Parameters[8].Value := anomatri + '/' + mesmatri + '/' + diamatri;
+    ADOStoredProcAlterCli.Parameters[9].Value := edt_emailcli.Text;
+    ADOStoredProcAlterCli.Parameters[10].Value := ComboBoxstatuscli.itemindex;
+    ADOStoredProcAlterCli.Parameters[11].Value := ComboBoxsexocli.text;
+    ADOStoredProcAlterCli.Parameters[12].Value := edt_foto.Text;
+    ADOStoredProcAlterCli.Parameters[13].Value := ComboBoxTipoTreino.text;
+    ADOStoredProcAlterCli.Parameters[14].Value := edt_usuario.Text;
+
+    ADOStoredProcAlterCli.ExecProc;
+
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Close;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Open;
+    ////Unit_consultacli.form_consultacli.DBGridconsultacli.Refresh;
+    U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcli.Refresh;
+
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Close;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Open;
+    U_Cadastrar_Mensalidades.frm_cadasmensalidades.ADOQueryCadasMensa.Refresh;
+
+    MessageDlg('Cliente alterado com sucesso !',mtInformation,[mbOK],0);
+
+    Close;
+  end;
+  finally
+
+  end;
+end;
+
+procedure Tfrm_altercli.Image6Click(Sender: TObject);
+begin
+ if Application.MessageBox('Deseja Realmente Sair? Nenhum Dado Será Alterado!','Atenção',MB_ICONQUESTION + MB_YESNO) = IDNO then
+ begin
+
+ end
+
+ else
+ begin
+   frm_altercli.Close;
+ end;
+
+end;
+
+procedure Tfrm_altercli.img_altermedidasClick(Sender: TObject);
+begin
+ // ADOQueryMedidasCOD_CLI.AsString := edt_cod.Text;
+
+  {U_Consultar_Medidas.frm_consultarmedi.MaskEditdataavaliacao.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliDTAVF_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.Editcodigo.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliCOD_CLI.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_nomeclimedidas.Text := edt_nomecli.Text;
+  U_Consultar_Medidas.frm_consultarmedi.edt_peso.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliPS_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_altura.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliAT_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_biceps.Text :=  U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliBC_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_triceps.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliTC_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_peitoral.Text :=  U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliPT_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_quadril.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliQD_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_cintura.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliCT_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_coxa.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliCX_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_ombro.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliOB_MD.AsString;
+  U_Consultar_Medidas.frm_consultarmedi.edt_panturrilha.Text := U_Consultar_Cliente.frm_consultacli.ADOQueryconsultcliPTR_MD.AsString;
+
+  frm_consultarmedi.ShowModal;}
+end;
+
+end.

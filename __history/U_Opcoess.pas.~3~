@@ -1,0 +1,63 @@
+unit U_Opcoess;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, pngimage, ExtCtrls, Shellapi;
+
+type
+  Tfrm_opcoess = class(TForm)
+    Image1: TImage;
+    Image2: TImage;
+    Image4: TImage;
+    Image5: TImage;
+    Image6: TImage;
+    Image7: TImage;
+    Image3: TImage;
+    procedure Image7Click(Sender: TObject);
+    procedure Image4Click(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_opcoess: Tfrm_opcoess;
+
+implementation
+
+uses U_Calcular_IMC;
+
+{$R *.dfm}
+
+procedure Tfrm_opcoess.Image2Click(Sender: TObject);
+begin
+  WinExec('Calc.Exe',SW_Show);
+end;
+
+procedure Tfrm_opcoess.Image3Click(Sender: TObject);
+begin
+   ShellExecute(0, Nil, PChar('www.facebook.com.br'), Nil, Nil, 0);
+end;
+
+procedure Tfrm_opcoess.Image4Click(Sender: TObject);
+begin
+ frm_calimc.ShowModal;
+end;
+
+procedure Tfrm_opcoess.Image6Click(Sender: TObject);
+begin
+    ShellExecute(0, Nil, PChar('www.google.com.br'), Nil, Nil, 0);
+end;
+
+procedure Tfrm_opcoess.Image7Click(Sender: TObject);
+begin
+ close;
+end;
+
+end.

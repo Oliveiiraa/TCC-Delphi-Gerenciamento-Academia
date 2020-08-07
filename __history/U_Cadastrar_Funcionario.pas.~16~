@@ -1,0 +1,191 @@
+unit U_Cadastrar_Funcionario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtDlgs, DB, ADODB, StdCtrls, Mask, ExtCtrls, jpeg, pngimage;
+
+type
+  Tfrm_cadasfunc = class(TForm)
+    lbl_nomefunc: TLabel;
+    lbl_enderecofunc: TLabel;
+    lbl_cpffunc: TLabel;
+    lbl_rgfunc: TLabel;
+    lbl_telefonefunc: TLabel;
+    lbl_datanascfunc: TLabel;
+    lbl_emailfunc: TLabel;
+    lbl_sexofunc: TLabel;
+    edt_nomefunc: TEdit;
+    edt_enderecofunc: TEdit;
+    edt_cpffunc: TEdit;
+    edt_rgfunc: TEdit;
+    edt_emailfunc: TEdit;
+    btn_carregarfotofunc: TButton;
+    btn_salvarcadfun: TButton;
+    btn_limpar: TButton;
+    edt_foto: TEdit;
+    MaskEditdatapag: TMaskEdit;
+    MaskEdittel: TMaskEdit;
+    ComboBoxsexofunc: TComboBox;
+    ComboBoxstatusfunc: TComboBox;
+    ADOConnection1: TADOConnection;
+    ADOStoredProc1: TADOStoredProc;
+    OpenPictureDialog1: TOpenPictureDialog;
+    OpenDialog1: TOpenDialog;
+    edt_codusu: TEdit;
+    Image_cadastrofunc: TImage;
+    Image1: TImage;
+    procedure btn_salvarcadfunClick(Sender: TObject);
+    procedure btn_limparClick(Sender: TObject);
+    procedure btn_carregarfotofuncClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_cadasfunc: Tfrm_cadasfunc;
+
+implementation
+
+uses U_Cadastrar, U_Consultar_Funcionario, U_Verifica_CPF, U_Login_Sistema;
+
+{$R *.dfm}
+
+procedure Tfrm_cadasfunc.btn_carregarfotofuncClick(Sender: TObject);
+begin
+   if OpenDialog1.Execute then
+  begin
+    Image_cadastrofunc.Picture.LoadFromFile(OpenDialog1.FileName);
+    edt_foto.Text := OpenDialog1.FileName;
+    Image_cadastrofunc.Visible := True;
+  end;
+end;
+
+procedure Tfrm_cadasfunc.btn_limparClick(Sender: TObject);
+begin
+  edt_nomefunc.Clear;
+  edt_enderecofunc.Clear;
+  edt_cpffunc.Clear;
+  edt_rgfunc.Clear;
+  MaskEdittel.Clear;
+  edt_emailfunc.Clear;
+  edt_foto.Clear;
+  ComboBoxsexofunc.ItemIndex := -1;
+  ComboBoxstatusfunc.ItemIndex := -1;
+  MaskEditdatapag.Clear;
+end;
+
+procedure Tfrm_cadasfunc.btn_salvarcadfunClick(Sender: TObject);
+var
+ano, mes, dia : string;
+begin
+  if edt_nomefunc.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o Nome!',mtError,[mbOK],0);
+    edt_nomefunc.SetFocus;
+  end
+
+  else if edt_enderecofunc.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o Endereço!',mtError,[mbOK],0);
+    edt_enderecofunc.SetFocus;
+  end
+
+  else if edt_cpffunc.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o CPF!',mtError,[mbOK],0);
+    edt_cpffunc.SetFocus;
+  end
+
+  else if edt_rgfunc.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o RG!',mtError,[mbOK],0);
+    edt_rgfunc.SetFocus;
+  end
+
+  else if MaskEdittel.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o Telefone!',mtError,[mbOK],0);
+    MaskEdittel.SetFocus;
+  end
+
+  else if MaskEditdatapag.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com a Data de Pagamento!',mtError,[mbOK],0);
+    MaskEditdatapag.SetFocus;
+  end
+
+  else if edt_emailfunc.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o E-Mail!',mtError,[mbOK],0);
+    edt_emailfunc.SetFocus;
+  end
+
+  else if ComboBoxsexofunc.ItemIndex = -1 then
+  begin
+    MessageDlg('Selecione o Sexo !',mtError,[mbOK],0);
+    ComboBoxsexofunc.SetFocus;
+  end;
+
+  {if isCPF(edt_cpffunc.Text)
+     then Result.Caption := imprimeCPF(CPF.Text)
+  else
+  begin
+  showmessage ('Erro: CPF inválido !!!');
+  end;}
+
+  try
+  begin
+    ADOStoredProc1.Parameters[1].Value := edt_nomefunc.Text;
+    ADOStoredProc1.Parameters[2].Value := edt_enderecofunc.Text;
+    ADOStoredProc1.Parameters[3].Value := edt_cpffunc.Text;
+    ADOStoredProc1.Parameters[4].Value := edt_rgfunc.Text;
+    ADOStoredProc1.Parameters[5].Value := MaskEdittel.Text;
+    ano := copy(MaskEditdatapag.Text,7,4);
+    mes := copy(MaskEditdatapag.Text,4,2);
+    dia := copy(MaskEditdatapag.Text,1,2);
+    ADOStoredProc1.Parameters[6].Value := ano + '/' + mes + '/' + dia;
+    ADOStoredProc1.Parameters[7].Value := edt_emailfunc.Text;
+    ADOStoredProc1.Parameters[8].Value := ComboBoxsexofunc.ItemIndex;
+    ComboBoxstatusfunc.ItemIndex := 0;
+    ADOStoredProc1.Parameters[9].Value := ComboBoxstatusfunc.ItemIndex;
+    ADOStoredProc1.Parameters[10].Value := edt_foto.Text;
+    ADOStoredProc1.Parameters[11].Value := edt_codusu.Text;
+
+    ///////////ADOQueryconsultafunc.Close;
+    ///Form_consultafunc.ADOQueryconsultafunc.Open;
+    ///Form_consultafunc.DBGridconsultafunc.Update;
+
+    ADOStoredProc1.ExecProc;
+
+    MessageDlg('Funcionário cadastrado com sucesso !',mtConfirmation,[mbOK],0);
+
+    frm_cadasfunc.Close;
+    edt_nomefunc.Clear;
+    edt_enderecofunc.Clear;
+    edt_cpffunc.Clear;
+    edt_rgfunc.Clear;
+    edt_emailfunc.Clear;
+    edt_foto.Clear;
+    MaskEditdatapag.Clear;
+    MaskEdittel.Clear;
+    edt_codusu.Clear;
+    Image_cadastrofunc.Picture.LoadFromFile('C:\images.PNG');
+  end
+  finally
+
+  end;
+end;
+
+procedure Tfrm_cadasfunc.FormShow(Sender: TObject);
+begin
+  Image_cadastrofunc.Picture.LoadFromFile('C:\images.PNG');
+  U_Login_Sistema.frm_loginsistema.ADOQueryLogin.Last;
+  U_Cadastrar_Funcionario.frm_cadasfunc.edt_codusu.Text := U_Login_Sistema.frm_loginsistema.ADOQueryLoginCOD_USU.AsString;
+end;
+
+end.

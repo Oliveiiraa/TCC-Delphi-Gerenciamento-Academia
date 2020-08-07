@@ -1,0 +1,110 @@
+unit U_Alterar_Mensalidade;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ADODB, Mask, StdCtrls, pngimage, ExtCtrls;
+
+type
+  Tfrm_alterarmensa = class(TForm)
+    lbl_datavenc: TLabel;
+    lbl_nmcli: TLabel;
+    lbl_valor: TLabel;
+    Label1: TLabel;
+    btn_cadasmensa: TButton;
+    edt_nmcli: TEdit;
+    edt_codcli: TEdit;
+    MaskEditDataVenc: TMaskEdit;
+    MaskEditDataPag: TMaskEdit;
+    ADOConnectionAlterMensa: TADOConnection;
+    ADOStoredProcAlterMensa: TADOStoredProc;
+    ADOQueryAlterMensa: TADOQuery;
+    ADOQueryAlterMensaCOD_CLI: TAutoIncField;
+    ADOQueryAlterMensaNM_CLI: TStringField;
+    ADOQueryAlterMensaEND_CLI: TStringField;
+    ADOQueryAlterMensaCPF_CLI: TStringField;
+    ADOQueryAlterMensaRG_CLI: TStringField;
+    ADOQueryAlterMensaTEL_CLI: TStringField;
+    ADOQueryAlterMensaDTMATRI_CLI: TWideStringField;
+    ADOQueryAlterMensaDTNASC_CLI: TWideStringField;
+    ADOQueryAlterMensaEML_CLI: TStringField;
+    ADOQueryAlterMensaSTA_CLI: TBooleanField;
+    ADOQueryAlterMensaSX_CLI: TBooleanField;
+    ADOQueryAlterMensaFT_CLI: TStringField;
+    ADOQueryAlterMensaCOD_USU: TIntegerField;
+    Image1: TImage;
+    Image6: TImage;
+    Image3: TImage;
+    Image2: TImage;
+    edt_valor: TEdit;
+    procedure Image6Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_alterarmensa: Tfrm_alterarmensa;
+
+implementation
+
+uses U_Consultar_Mensalidades;
+
+{$R *.dfm}
+
+procedure Tfrm_alterarmensa.Image3Click(Sender: TObject);
+var
+dia2,mes2,ano2,ano1,mes1,dia1 : string;
+  datac,ano3,dia3,mes3 : string;
+begin
+    try
+    begin
+      dia1 := Copy(MaskEditDataPag.Text,1,2);
+      mes1 := Copy(MaskEditDataPag.Text,4,2);
+      ano1 := Copy(MaskEditDataPag.Text,7,4);
+      ADOStoredProcAlterMensa.Parameters[2].Value := ano1 + '/' + mes1 + '/' + dia1;
+      dia2 := Copy(MaskEditDataVenc.Text,1,2);
+      mes2 := Copy(MaskEditDataVenc.Text,4,2);
+      ano2 := Copy(MaskEditDataVenc.Text,7,4);
+      ADOStoredProcAlterMensa.Parameters[3].Value := ano2 + '/' + mes2 + '/' + dia2;
+      ADOStoredProcAlterMensa.Parameters[4].Value := edt_valor.Text;
+      ADOStoredProcAlterMensa.Parameters[1].Value := edt_codcli.Text;
+
+      ADOStoredProcAlterMensa.ExecProc;
+
+      MessageDlg('Novo Pagamento Efetuado com Sucesso!',mtInformation,[mbOK],0);
+
+    frm_alterarmensa.Close;
+    U_Consultar_Mensalidades.frm_consultmensa.ADOQueryConsultaMensa.Close;
+    U_Consultar_Mensalidades.frm_consultmensa.ADOQueryConsultaMensa.Open;
+    U_Consultar_Mensalidades.frm_consultmensa.ADOQueryConsultaMensa.Refresh;
+    U_Consultar_Mensalidades.frm_consultmensa.DBGridConsultaMensa.Refresh;
+    edt_nmcli.Clear;
+    MaskEditDataVenc.Clear;
+    MaskEditDataPag.Clear;
+    edt_valor.Clear;
+
+    //U_Consultar_Mensalidades.frm_consultmensa.DBGridConsultaMensaDrawColumnCell;
+    end
+  finally
+
+  end;
+end;
+
+procedure Tfrm_alterarmensa.Image6Click(Sender: TObject);
+begin
+  if Application.MessageBox('Deseja Realmente Sair? Nenhum Pagamento Será Realizado!','Atenção',MB_ICONQUESTION + MB_YESNO) = IDNO then
+ begin
+
+ end
+
+ else
+ begin
+   frm_alterarmensa.Close;
+ end;
+end;
+
+end.

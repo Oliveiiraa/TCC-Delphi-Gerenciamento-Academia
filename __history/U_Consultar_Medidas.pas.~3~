@@ -1,0 +1,83 @@
+unit U_Consultar_Medidas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, pngimage, ExtCtrls, Mask, StdCtrls, DB, Grids, DBGrids, ADODB, Clipbrd;
+
+type
+  Tfrm_consultarmedi = class(TForm)
+    ADOConnectionConsultMedidas: TADOConnection;
+    DataSourceConsultMedidas: TDataSource;
+    ADOQueryConsultMedidas: TADOQuery;
+    DBGrid1: TDBGrid;
+    ADOQueryConsultMedidasCOD_CLI: TAutoIncField;
+    ADOQueryConsultMedidasNM_CLI: TStringField;
+    ADOQueryConsultMedidasEND_CLI: TStringField;
+    ADOQueryConsultMedidasCPF_CLI: TStringField;
+    ADOQueryConsultMedidasRG_CLI: TStringField;
+    ADOQueryConsultMedidasTEL_CLI: TStringField;
+    ADOQueryConsultMedidasDTMATRI_CLI: TWideStringField;
+    ADOQueryConsultMedidasDTNASC_CLI: TWideStringField;
+    ADOQueryConsultMedidasEML_CLI: TStringField;
+    ADOQueryConsultMedidasSTA_CLI: TBooleanField;
+    ADOQueryConsultMedidasSX_CLI: TStringField;
+    ADOQueryConsultMedidasFT_CLI: TStringField;
+    ADOQueryConsultMedidasTPT_CLI: TStringField;
+    ADOQueryConsultMedidasCOD_USU: TIntegerField;
+    ADOQueryConsultMedidasCOD_MD: TAutoIncField;
+    ADOQueryConsultMedidasDTAVF_MD: TWideStringField;
+    ADOQueryConsultMedidasPS_MD: TBCDField;
+    ADOQueryConsultMedidasAT_MD: TBCDField;
+    ADOQueryConsultMedidasBC_MD: TBCDField;
+    ADOQueryConsultMedidasTC_MD: TBCDField;
+    ADOQueryConsultMedidasPT_MD: TBCDField;
+    ADOQueryConsultMedidasQD_MD: TBCDField;
+    ADOQueryConsultMedidasCT_MD: TBCDField;
+    ADOQueryConsultMedidasCX_MD: TBCDField;
+    ADOQueryConsultMedidasOB_MD: TBCDField;
+    ADOQueryConsultMedidasPTR_MD: TBCDField;
+    ADOQueryConsultMedidasCOD_CLI_1: TIntegerField;
+    btn_adcmedidas: TButton;
+    btn_visumedi: TButton;
+    edt_buscar: TEdit;
+    procedure btn_adcmedidasClick(Sender: TObject);
+    procedure edt_buscarChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_consultarmedi: Tfrm_consultarmedi;
+
+implementation
+
+uses U_Cadastrar_Medidas;
+
+{$R *.dfm}
+
+procedure Tfrm_consultarmedi.btn_adcmedidasClick(Sender: TObject);
+begin
+  U_Cadastrar_Medidas.frm_cadasmedidas.edt_nomeclimedidas.Text := ADOQueryConsultMedidasNM_CLI.AsString;
+  frm_cadasmedidas.ShowModal;
+end;
+
+procedure Tfrm_consultarmedi.edt_buscarChange(Sender: TObject);
+begin
+  with ADOQueryConsultMedidas do
+  begin
+    Active := False;
+    Close;
+    SQL.Clear;
+    SQL.Add('SELECT*FROM TB_CLIENTES,TB_MEDIDAS WHERE TB_CLIENTES.COD_CLI=TB_MEDIDAS.COD_CLI    AND');
+    sql.Add(' NM_CLI LIKE ''%' + edt_buscar.Text + '%''                   ');
+    Clipboard.AsText := ADOQueryConsultMedidas.SQL.Text;
+    Open;
+    Active := True;
+  end;
+end;
+
+end.

@@ -1,0 +1,282 @@
+unit U_Alterar_Funcionario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtDlgs, DB, ADODB, StdCtrls, Mask, ExtCtrls, ComCtrls, jpeg,
+  pngimage;
+
+type
+  Tfrm_alterafunc = class(TForm)
+    lbl_nomefunc: TLabel;
+    lbl_enderecofunc: TLabel;
+    lbl_cpffunc: TLabel;
+    lbl_rgfunc: TLabel;
+    lbl_telefonefunc: TLabel;
+    lbl_alterdatanascfunc: TLabel;
+    lbl_emailfunc: TLabel;
+    Image_AlterFunc: TImage;
+    lbl_sexofunc: TLabel;
+    lbl_statusfunc: TLabel;
+    edt_nomefunc: TEdit;
+    edt_enderecofunc: TEdit;
+    edt_emailfunc: TEdit;
+    btn_carregarfotofunc: TButton;
+    btn_salvarcadfun: TButton;
+    edt_foto: TEdit;
+    MaskEdittel: TMaskEdit;
+    ComboBoxsexofunc: TComboBox;
+    ComboBoxstatusfunc: TComboBox;
+    ADOConnectionAlterFunc: TADOConnection;
+    ADOStoredProcAlterFunc: TADOStoredProc;
+    edt_codfunc: TEdit;
+    MaskEditdataNasc: TMaskEdit;
+    OpenPictureDialogAlterFunc: TOpenPictureDialog;
+    edt_codusu: TEdit;
+    Image1: TImage;
+    Image2: TImage;
+    btn_limpar: TButton;
+    Image6: TImage;
+    Image3: TImage;
+    Image4: TImage;
+    MaskEditRGFunc: TMaskEdit;
+    MaskEditCPFFUNC: TMaskEdit;
+    procedure FormShow(Sender: TObject);
+    procedure btn_salvarcadfunClick(Sender: TObject);
+    procedure btn_carregarfotofuncClick(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+    procedure ComboBoxstatusfuncKeyPress(Sender: TObject; var Key: Char);
+    procedure ComboBoxsexofuncKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_alterafunc: Tfrm_alterafunc;
+
+implementation
+
+uses U_Consultar_Funcionario;
+
+{$R *.dfm}
+
+procedure Tfrm_alterafunc.btn_carregarfotofuncClick(Sender: TObject);
+begin
+   if OpenPictureDialogAlterFunc.Execute then
+  begin
+    Image_AlterFunc.Picture.LoadFromFile(OpenPictureDialogAlterFunc.FileName);
+    edt_foto.Text := OpenPictureDialogAlterFunc.FileName;
+    Image_AlterFunc.Visible := True;
+  end;
+end;
+
+procedure Tfrm_alterafunc.btn_salvarcadfunClick(Sender: TObject);
+var
+  ano, mes, dia : string;
+begin
+  try
+  begin
+    ADOStoredProcAlterFunc.Parameters[1].Value := edt_codfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[2].Value := edt_nomefunc.Text;
+    ADOStoredProcAlterFunc.Parameters[3].Value := edt_enderecofunc.Text;
+    ADOStoredProcAlterFunc.Parameters[4].Value := MaskEditCPFFUNC.Text;
+    ADOStoredProcAlterFunc.Parameters[5].Value := MaskEditRGFunc.Text;
+    ADOStoredProcAlterFunc.Parameters[6].Value := MaskEdittel.Text;
+    ano := copy(MaskEditdataNasc.Text,7,4);
+    mes := copy(MaskEditdataNasc.Text,4,2);
+    dia := copy(MaskEditdataNasc.Text,1,2);
+    ADOStoredProcAlterFunc.Parameters[7].Value := ano + mes + dia;
+    ADOStoredProcAlterFunc.Parameters[8].Value := edt_emailfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[9].Value := ComboBoxsexofunc.Text;
+    ADOStoredProcAlterFunc.Parameters[10].Value := ComboBoxstatusfunc.ItemIndex;
+    ADOStoredProcAlterFunc.Parameters[11].Value := edt_foto.Text;
+    ADOStoredProcAlterFunc.Parameters[12].Value := edt_codusu.Text;
+    ADOStoredProcAlterFunc.ExecProc;
+
+    MessageDlg('Funcionário alterado com sucesso !',mtConfirmation,[mbOK],0);
+
+    edt_foto.Clear;
+    Image_AlterFunc.visible := false;
+    frm_alterafunc.Close;
+    frm_consultafunc.ADOQueryconsultafunc.Close;
+    frm_consultafunc.ADOQueryconsultafunc.Open;
+    frm_consultafunc.DBGridconsultafunc.Refresh;
+    frm_consultafunc.ADOQueryconsultafunc.Refresh;
+  end
+  finally
+
+  end;
+end;
+
+procedure Tfrm_alterafunc.ComboBoxsexofuncKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  key:=#0;
+end;
+
+procedure Tfrm_alterafunc.ComboBoxstatusfuncKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  key:=#0;
+end;
+
+procedure Tfrm_alterafunc.FormShow(Sender: TObject);
+begin
+  if (edt_foto.Text = EmptyStr) and (Image_AlterFunc.Visible = false) then
+  begin
+    Image_AlterFunc.Visible := True;
+    Image_AlterFunc.Picture.LoadFromFile('C:\images.PNG');
+  end
+  else if (edt_foto.Text = EmptyStr) and (Image_AlterFunc.Visible = True) then
+  begin
+    Image_AlterFunc.Picture.LoadFromFile('C:\images.PNG');
+  end
+  else
+  begin
+    Image_AlterFunc.Visible := True;
+    Image_AlterFunc.Picture.LoadFromFile(edt_foto.Text);
+  end;
+end;
+
+procedure Tfrm_alterafunc.Image2Click(Sender: TObject);
+var
+  ano, mes, dia,a,b,c : string;
+begin
+  if edt_nomefunc.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o Nome!',mtError,[mbOK],0);
+    edt_nomefunc.SetFocus;
+    Exit;
+  end
+
+  else if MaskEditCPFFUNC.Text = '   .   .   -  ' then
+  begin
+    MessageDlg('Entre com o CPF!',mtError,[mbOK],0);
+    MaskEditCPFFUNC.SetFocus;
+    Exit;
+  end
+
+  else if MaskEditRGFunc.Text = '  .   .   - ' then
+  begin
+    MessageDlg('Entre com o RG!',mtError,[mbOK],0);
+    MaskEditRGFunc.SetFocus;
+    Exit;
+  end
+
+  else if MaskEditdatanasc.Text = '  /  /    ' then
+  begin
+    MessageDlg('Entre com a Data de Nascimento!',mtError,[mbOK],0);
+    MaskEditdatanasc.SetFocus;
+    Exit;
+  end;
+
+  a := copy(MaskEditdatanasc.Text,1,2);
+  b := copy(MaskEditdatanasc.Text,4,2);
+  c := copy(MaskEditdatanasc.Text,7,4);
+
+  if  a >= '32' then
+  begin
+    MessageDlg('Data Inválida',mtError,[mbOK],0);
+    MaskEditdatanasc.SetFocus;
+    Exit;
+  end
+
+  else if b >= '13' then
+  begin
+    MessageDlg('Data Inválida',mtError,[mbOK],0);
+    MaskEditdatanasc.SetFocus;
+    Exit;
+  end
+
+  else if edt_enderecofunc.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o Endereço!',mtError,[mbOK],0);
+    edt_enderecofunc.SetFocus;
+    Exit;
+  end
+
+  else if MaskEdittel.Text = '(  )     -    ' then
+  begin
+    MessageDlg('Entre com o celular!',mtError,[mbOK],0);
+    MaskEdittel.SetFocus;
+    Exit;
+  end
+
+  else if ComboBoxsexofunc.ItemIndex = -1 then
+  begin
+    MessageDlg('Selecione o Sexo !',mtError,[mbOK],0);
+    ComboBoxsexofunc.SetFocus;
+    Exit;
+  end
+
+  else if edt_emailfunc.Text = EmptyStr then
+  begin
+    MessageDlg('Entre com o E-Mail!',mtError,[mbOK],0);
+    edt_emailfunc.SetFocus;
+    Exit;
+  end;
+
+   try
+  begin
+    ADOStoredProcAlterFunc.Parameters[1].Value := edt_codfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[2].Value := edt_nomefunc.Text;
+    ADOStoredProcAlterFunc.Parameters[3].Value := edt_enderecofunc.Text;
+    ADOStoredProcAlterFunc.Parameters[4].Value := MaskEditCPFFUNC.Text;
+    ADOStoredProcAlterFunc.Parameters[5].Value := MaskEditRGFunc.Text;
+    ADOStoredProcAlterFunc.Parameters[6].Value := MaskEdittel.Text;
+    ano := copy(MaskEditdataNasc.Text,7,4);
+    mes := copy(MaskEditdataNasc.Text,4,2);
+    dia := copy(MaskEditdataNasc.Text,1,2);
+    ADOStoredProcAlterFunc.Parameters[7].Value := ano + '/' + mes + '/' + dia;
+    ADOStoredProcAlterFunc.Parameters[8].Value := edt_emailfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[9].Value := ComboBoxsexofunc.Text;
+    ADOStoredProcAlterFunc.Parameters[10].Value := ComboBoxstatusfunc.ItemIndex;
+    ADOStoredProcAlterFunc.Parameters[11].Value := edt_foto.Text;
+    ADOStoredProcAlterFunc.Parameters[12].Value := edt_codusu.Text;
+
+    ADOStoredProcAlterFunc.ExecProc;
+
+    MessageDlg('Funcionário alterado com sucesso !',mtConfirmation,[mbOK],0);
+
+    edt_foto.Clear;
+    Image_AlterFunc.visible := false;
+    frm_alterafunc.Close;
+    frm_consultafunc.ADOQueryconsultafunc.Close;
+    frm_consultafunc.ADOQueryconsultafunc.Open;
+    frm_consultafunc.ADOQueryconsultafunc.Refresh;
+    frm_consultafunc.DBGridconsultafunc.Refresh;
+  end
+  finally
+
+  end;
+end;
+
+procedure Tfrm_alterafunc.Image3Click(Sender: TObject);
+begin
+   if OpenPictureDialogAlterFunc.Execute then
+  begin
+    Image_AlterFunc.Picture.LoadFromFile(OpenPictureDialogAlterFunc.FileName);
+    edt_foto.Text := OpenPictureDialogAlterFunc.FileName;
+    Image_AlterFunc.Visible := True;
+  end;
+end;
+
+procedure Tfrm_alterafunc.Image6Click(Sender: TObject);
+begin
+  if Application.MessageBox('Deseja Realmente Sair? Nenhum Dado Será Alterado!','Atenção',MB_ICONQUESTION + MB_YESNO) = IDNO then
+ begin
+
+ end
+
+ else
+ begin
+   frm_alterafunc.Close;
+ end;
+end;
+
+end.

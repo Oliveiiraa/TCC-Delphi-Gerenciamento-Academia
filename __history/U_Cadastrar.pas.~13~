@@ -1,0 +1,94 @@
+unit U_Cadastrar;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, pngimage, ExtCtrls;
+
+type
+  Tfrm_cadastrar = class(TForm)
+    Image1: TImage;
+    Image2: TImage;
+    Image3: TImage;
+    Image4: TImage;
+    Image6: TImage;
+    procedure btn_cadastrarcliClick(Sender: TObject);
+    procedure btn_cadasfuncClick(Sender: TObject);
+    procedure btn_cadasloginClick(Sender: TObject);
+    procedure btn_cancelarClick(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+    procedure Image4Click(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_cadastrar: Tfrm_cadastrar;
+
+implementation
+
+uses U_Cadastrar_Cliente, U_Cadastrar_Funcionario, U_Cadastrar_Login,
+  U_Cadastrar_Usuario, U_Login_Sistema;
+
+{$R *.dfm}
+
+procedure Tfrm_cadastrar.btn_cadasfuncClick(Sender: TObject);
+begin
+  frm_cadasfunc.ShowModal;
+end;
+
+procedure Tfrm_cadastrar.btn_cadasloginClick(Sender: TObject);
+begin
+   frm_cadasusu.showmodal;
+end;
+
+procedure Tfrm_cadastrar.btn_cadastrarcliClick(Sender: TObject);
+begin
+  frm_cadastrarcli.ShowModal;
+end;
+
+procedure Tfrm_cadastrar.btn_cancelarClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure Tfrm_cadastrar.Image2Click(Sender: TObject);
+begin
+ frm_cadastrarcli.ShowModal;
+end;
+
+procedure Tfrm_cadastrar.Image3Click(Sender: TObject);
+begin
+  if U_Login_Sistema.frm_loginsistema.ADOQueryLoginTP_USU.AsBoolean = False then
+  begin
+  frm_cadasfunc.ShowModal;
+  end
+  else
+  begin
+    MessageDlg('Você não tem permissão para cadastrar funcionário!',mtError,[mbOK],0);
+  end;
+end;
+
+procedure Tfrm_cadastrar.Image4Click(Sender: TObject);
+begin
+  if U_Login_Sistema.frm_loginsistema.ADOQueryLoginTP_USU.AsBoolean = False then
+  begin
+    frm_cadasusu.ShowModal;
+  end
+  else
+  begin
+    MessageDlg('Você não tem permissão para cadastrar usuário!',mtError,[mbOK],0);
+  end;
+end;
+
+procedure Tfrm_cadastrar.Image6Click(Sender: TObject);
+begin
+ close;
+end;
+
+end.

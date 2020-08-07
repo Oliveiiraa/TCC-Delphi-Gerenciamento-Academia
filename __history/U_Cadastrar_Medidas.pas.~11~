@@ -1,0 +1,118 @@
+unit U_Cadastrar_Medidas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ADODB, Mask, StdCtrls, pngimage, ExtCtrls;
+
+type
+  Tfrm_cadasmedidas = class(TForm)
+    lbl_nomeclimedidas: TLabel;
+    lbl_dataavaliacaofisica: TLabel;
+    lbl_peso: TLabel;
+    lbl_altura: TLabel;
+    lbl_biceps: TLabel;
+    lbl_triceps: TLabel;
+    lbl_peitoral: TLabel;
+    lbl_quadril: TLabel;
+    lbl_cintura: TLabel;
+    lbl_coxa: TLabel;
+    lbl_ombro: TLabel;
+    lbl_panturrilha: TLabel;
+    Image1: TImage;
+    edt_nomeclimedidas: TEdit;
+    edt_peso: TEdit;
+    edt_altura: TEdit;
+    edt_biceps: TEdit;
+    edt_triceps: TEdit;
+    edt_peitoral: TEdit;
+    edt_quadril: TEdit;
+    edt_cintura: TEdit;
+    edt_coxa: TEdit;
+    edt_ombro: TEdit;
+    edt_panturrilha: TEdit;
+    bnt_salvarmedidas: TButton;
+    MaskEditdataavaliacao: TMaskEdit;
+    Editcodigo: TEdit;
+    ADOStoredProcMedidas: TADOStoredProc;
+    ADOConnectionMedidas: TADOConnection;
+    Image2: TImage;
+    Image3: TImage;
+    procedure bnt_cancelarmedidasClick(Sender: TObject);
+    procedure bnt_salvarmedidasClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_cadasmedidas: Tfrm_cadasmedidas;
+
+implementation
+
+uses U_Cadastrar_Cliente, U_Cadastrar_Mensalidades;
+
+{$R *.dfm}
+
+procedure Tfrm_cadasmedidas.bnt_cancelarmedidasClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure Tfrm_cadasmedidas.bnt_salvarmedidasClick(Sender: TObject);
+var
+  ano,mes,dia,ano2,mes2,dia2 : string;
+begin
+  try
+    dia := Copy(MaskEditdataavaliacao.Text,1,2);
+    mes := Copy(MaskEditdataavaliacao.Text,4,2);
+    ano := Copy(MaskEditdataavaliacao.Text,7,4);
+    ADOStoredProcMedidas.Parameters[1].Value := ano + '/' + mes + '/' + dia;
+    ADOStoredProcMedidas.Parameters[2].Value := edt_peso.Text;
+    ADOStoredProcMedidas.Parameters[3].Value := edt_altura.text;
+    ADOStoredProcMedidas.Parameters[4].Value := edt_biceps.Text;
+    ADOStoredProcMedidas.Parameters[5].Value := edt_triceps.Text;
+    ADOStoredProcMedidas.Parameters[6].Value := edt_peitoral.Text;
+    ADOStoredProcMedidas.Parameters[7].Value := edt_quadril.Text;
+    ADOStoredProcMedidas.Parameters[8].Value := edt_cintura.Text;
+    ADOStoredProcMedidas.Parameters[9].Value := edt_coxa.Text;
+    ADOStoredProcMedidas.Parameters[10].Value := edt_ombro.Text;
+    ADOStoredProcMedidas.Parameters[11].Value := edt_panturrilha.Text;
+    ADOStoredProcMedidas.Parameters[12].Value := Editcodigo.Text;
+
+    ADOStoredProcMedidas.ExecProc;
+
+    MessageDlg('Medidas Cadastradas com Sucesso !',mtInformation,[mbOk],0);
+
+    edt_nomeclimedidas.Clear;
+    MaskEditdataavaliacao.Clear;
+    edt_peso.Clear;
+    edt_altura.Clear;
+    edt_biceps.Clear;
+    edt_triceps.Clear;
+    edt_peitoral.Clear;
+    edt_quadril.Clear;
+    edt_cintura.Clear;
+    edt_coxa.Clear;
+    edt_ombro.Clear;
+    edt_panturrilha.Clear;
+
+    frm_cadasmensalidades.ShowModal;
+
+    frm_cadasmedidas.Close;
+
+  finally
+
+  end;
+end;
+
+procedure Tfrm_cadasmedidas.FormShow(Sender: TObject);
+begin
+  edt_nomeclimedidas.Text := frm_cadastrarcli.edt_nomecli.Text;
+  Editcodigo.Text := IntToStr(frm_cadastrarcli.ADOQueryCadascliCOD_CLI.AsInteger);
+end;
+
+end.

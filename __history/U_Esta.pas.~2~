@@ -1,0 +1,109 @@
+unit U_Esta;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, DB, ADODB, Grids, DBGrids, Clipbrd;
+
+type
+  Tfrm_esta = class(TForm)
+    Edit_totalalunos: TEdit;
+    Edit_alunosativos: TEdit;
+    Edit_alunosinativos: TEdit;
+    Edit4: TEdit;
+    Edit_despesas: TEdit;
+    DBGrid1: TDBGrid;
+    ADOConnection1: TADOConnection;
+    ADOQueryResulTotalCli: TADOQuery;
+    DataSource1: TDataSource;
+    Label_lucro: TLabel;
+    lbl_totalalunos: TLabel;
+    Label_alunosativos: TLabel;
+    Label_alunosinativos: TLabel;
+    Label_ganho: TLabel;
+    Label_despesas: TLabel;
+    ADOQueryresulTotalCliINa: TADOQuery;
+    ADOQueryresulTotalCliATIVO: TADOQuery;
+    ADOQueryTotalganho: TADOQuery;
+    ADOQueryTotaldespesas: TADOQuery;
+    ADOQueryTotalLucro: TADOQuery;
+    Edit_lucro: TEdit;
+    Button1: TButton;
+    ADOQueryResulTotalCliQTD: TIntegerField;
+    ADOQueryresulTotalCliATIVOQTDA: TIntegerField;
+    ADOQueryresulTotalCliINaQTDI: TIntegerField;
+    procedure FormShow(Sender: TObject);
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_esta: Tfrm_esta;
+
+implementation
+
+{$R *.dfm}
+
+
+
+
+
+procedure Tfrm_esta.FormShow(Sender: TObject);
+ var
+   mes_corrente : string;
+   ////resultado : real;
+
+  //showmessage(DateToStr(Date));
+  begin //mes_corrente := copy(4,2,DateToStr(Date));
+   with ADOQueryResulTotalCli do
+   begin
+     Close;
+     SQL.Clear;
+     SQL.Add('select count (*) [QTD]');
+     SQL.Add('from          TB_CLIENTES');
+     ///////////////////////////////////////////////SQL.Add('where data='+ mes_corrente+'');
+     Clipboard.AsText := ADOQueryResulTotalCli.SQL.Text;
+     Open;
+   end;
+
+
+    Edit_totalalunos.text := IntToStr(ADOQueryResulTotalCliQTD.AsInteger);
+
+    with ADOQueryresulTotalCliATIVO do
+   begin
+     Close;
+     SQL.Clear;
+     SQL.Add('select count (*)  [QTDA] ');
+     SQL.Add('from          TB_CLIENTES');
+     SQL.Add('where         STA_CLI = 0 ');
+     ///////////////////////////////////////////////SQL.Add('where data='+ mes_corrente+'');
+     Clipboard.AsText := ADOQueryresulTotalCliATIVO.SQL.Text;
+     Open;
+   end;
+    Edit_alunosativos.text := IntToStr(ADOQueryresulTotalCliATIVOQTDA.AsInteger);
+
+
+
+      with ADOQueryresulTotalCliINa do
+   begin
+     Close;
+     SQL.Clear;
+     SQL.Add('select count (*)  [QTDI] ');
+     SQL.Add('from          TB_CLIENTES');
+      SQL.Add('where        STA_CLI = 1 ');
+     ///////////////////////////////////////////////SQL.Add('where data='+ mes_corrente+'');
+     Clipboard.AsText := ADOQueryresulTotalCliINa.SQL.Text;
+     Open;
+   end;
+    Edit_alunosinativos.text := IntToStr(ADOQueryresulTotalCliINaQTDI.AsInteger);
+
+ //Edit1.Text := FloatToStr(ADOQueryResulTotalClitotal do periodo.ASFLOAT - ADOQueryResulxxxxxxxOUTRO_TOTAL.ASFLOAT);
+ ///resultado := ADOQueryResulTotalClitotal do periodo.ASFLOAT - ADOQueryResulxxxxxxxOUTRO_TOTAL.ASFLOAT;
+end;
+
+end.

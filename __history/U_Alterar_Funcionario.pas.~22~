@@ -1,0 +1,185 @@
+unit U_Alterar_Funcionario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtDlgs, DB, ADODB, StdCtrls, Mask, ExtCtrls, ComCtrls, jpeg,
+  pngimage;
+
+type
+  Tfrm_alterafunc = class(TForm)
+    lbl_nomefunc: TLabel;
+    lbl_enderecofunc: TLabel;
+    lbl_cpffunc: TLabel;
+    lbl_rgfunc: TLabel;
+    lbl_telefonefunc: TLabel;
+    lbl_alterdatanascfunc: TLabel;
+    lbl_emailfunc: TLabel;
+    Image_AlterFunc: TImage;
+    lbl_sexofunc: TLabel;
+    lbl_statusfunc: TLabel;
+    edt_nomefunc: TEdit;
+    edt_enderecofunc: TEdit;
+    edt_cpffunc: TEdit;
+    edt_rgfunc: TEdit;
+    edt_emailfunc: TEdit;
+    btn_carregarfotofunc: TButton;
+    btn_salvarcadfun: TButton;
+    edt_foto: TEdit;
+    MaskEdittel: TMaskEdit;
+    ComboBoxsexofunc: TComboBox;
+    ComboBoxstatusfunc: TComboBox;
+    ADOConnectionAlterFunc: TADOConnection;
+    ADOStoredProcAlterFunc: TADOStoredProc;
+    edt_codfunc: TEdit;
+    MaskEditdatapag: TMaskEdit;
+    OpenPictureDialogAlterFunc: TOpenPictureDialog;
+    edt_codusu: TEdit;
+    Image1: TImage;
+    Image2: TImage;
+    btn_limpar: TButton;
+    Image6: TImage;
+    Image3: TImage;
+    Image4: TImage;
+    procedure FormShow(Sender: TObject);
+    procedure btn_salvarcadfunClick(Sender: TObject);
+    procedure btn_carregarfotofuncClick(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frm_alterafunc: Tfrm_alterafunc;
+
+implementation
+
+uses U_Consultar_Funcionario;
+
+{$R *.dfm}
+
+procedure Tfrm_alterafunc.btn_carregarfotofuncClick(Sender: TObject);
+begin
+   if OpenPictureDialogAlterFunc.Execute then
+  begin
+    Image_AlterFunc.Picture.LoadFromFile(OpenPictureDialogAlterFunc.FileName);
+    edt_foto.Text := OpenPictureDialogAlterFunc.FileName;
+    Image_AlterFunc.Visible := True;
+  end;
+end;
+
+procedure Tfrm_alterafunc.btn_salvarcadfunClick(Sender: TObject);
+var
+  ano, mes, dia : string;
+begin
+  try
+  begin
+    ADOStoredProcAlterFunc.Parameters[1].Value := edt_codfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[2].Value := edt_nomefunc.Text;
+    ADOStoredProcAlterFunc.Parameters[3].Value := edt_enderecofunc.Text;
+    ADOStoredProcAlterFunc.Parameters[4].Value := edt_cpffunc.Text;
+    ADOStoredProcAlterFunc.Parameters[5].Value := edt_rgfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[6].Value := MaskEdittel.Text;
+    ano := copy(MaskEditdatapag.Text,7,4);
+    mes := copy(MaskEditdatapag.Text,4,2);
+    dia := copy(MaskEditdatapag.Text,1,2);
+    ADOStoredProcAlterFunc.Parameters[7].Value := ano + mes + dia;
+    ADOStoredProcAlterFunc.Parameters[8].Value := edt_emailfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[9].Value := ComboBoxstatusfunc.ItemIndex;
+    ADOStoredProcAlterFunc.Parameters[10].Value := ComboBoxsexofunc.Text;
+    ADOStoredProcAlterFunc.Parameters[11].Value := edt_foto.Text;
+
+    ADOStoredProcAlterFunc.ExecProc;
+
+    MessageDlg('Funcionário alterado com sucesso !',mtConfirmation,[mbOK],0);
+
+    edt_foto.Clear;
+    Image_AlterFunc.visible := false;
+    frm_alterafunc.Close;
+    frm_consultafunc.ADOQueryconsultafunc.Close;
+    frm_consultafunc.ADOQueryconsultafunc.Open;
+    frm_consultafunc.DBGridconsultafunc.Refresh;
+    frm_consultafunc.ADOQueryconsultafunc.Refresh;
+  end
+  finally
+
+  end;
+end;
+
+procedure Tfrm_alterafunc.FormShow(Sender: TObject);
+begin
+  if (edt_foto.Text = EmptyStr) and (Image_AlterFunc.Visible = false) then
+  begin
+    Image_AlterFunc.Visible := True;
+    Image_AlterFunc.Picture.LoadFromFile('C:\images.PNG');
+  end
+  else if (edt_foto.Text = EmptyStr) and (Image_AlterFunc.Visible = True) then
+  begin
+    Image_AlterFunc.Picture.LoadFromFile('C:\images.PNG');
+  end
+  else
+  begin
+    Image_AlterFunc.Visible := True;
+    Image_AlterFunc.Picture.LoadFromFile(edt_foto.Text);
+  end;
+end;
+
+procedure Tfrm_alterafunc.Image2Click(Sender: TObject);
+var
+  ano, mes, dia : string;
+begin
+   try
+  begin
+    ADOStoredProcAlterFunc.Parameters[1].Value := edt_codfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[2].Value := edt_nomefunc.Text;
+    ADOStoredProcAlterFunc.Parameters[3].Value := edt_enderecofunc.Text;
+    ADOStoredProcAlterFunc.Parameters[4].Value := edt_cpffunc.Text;
+    ADOStoredProcAlterFunc.Parameters[5].Value := edt_rgfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[6].Value := MaskEdittel.Text;
+    ano := copy(MaskEditdatapag.Text,7,4);
+    mes := copy(MaskEditdatapag.Text,4,2);
+    dia := copy(MaskEditdatapag.Text,1,2);
+    ADOStoredProcAlterFunc.Parameters[7].Value := ano + mes + dia;
+    ADOStoredProcAlterFunc.Parameters[8].Value := edt_emailfunc.Text;
+    ADOStoredProcAlterFunc.Parameters[9].Value := ComboBoxstatusfunc.ItemIndex;
+    ADOStoredProcAlterFunc.Parameters[10].Value := ComboBoxsexofunc.Text;
+    ADOStoredProcAlterFunc.Parameters[11].Value := edt_foto.Text;
+
+    ADOStoredProcAlterFunc.ExecProc;
+
+    MessageDlg('Funcionário alterado com sucesso !',mtConfirmation,[mbOK],0);
+
+    edt_foto.Clear;
+    Image_AlterFunc.visible := false;
+    frm_alterafunc.Close;
+    frm_consultafunc.ADOQueryconsultafunc.Close;
+    frm_consultafunc.ADOQueryconsultafunc.Open;
+    frm_consultafunc.DBGridconsultafunc.Refresh;
+    frm_consultafunc.ADOQueryconsultafunc.Refresh;
+  end
+  finally
+
+  end;
+end;
+
+procedure Tfrm_alterafunc.Image3Click(Sender: TObject);
+begin
+   if OpenPictureDialogAlterFunc.Execute then
+  begin
+    Image_AlterFunc.Picture.LoadFromFile(OpenPictureDialogAlterFunc.FileName);
+    edt_foto.Text := OpenPictureDialogAlterFunc.FileName;
+    Image_AlterFunc.Visible := True;
+  end;
+end;
+
+procedure Tfrm_alterafunc.Image6Click(Sender: TObject);
+begin
+ close;
+end;
+
+end.

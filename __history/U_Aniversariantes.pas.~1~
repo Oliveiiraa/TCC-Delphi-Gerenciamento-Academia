@@ -1,0 +1,56 @@
+unit U_Aniversariantes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Grids, DBGrids, DB, ADODB;
+
+type
+  TForm2 = class(TForm)
+    ADOQueryAniversariantes: TADOQuery;
+    DataSourceAniversariantes: TDataSource;
+    ADOConnectionAniversariantes: TADOConnection;
+    DBGrid1: TDBGrid;
+    Button1: TButton;
+    ComboBox1: TComboBox;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm2.Button1Click(Sender: TObject);
+VAR
+MES : STRING;
+begin
+  MES := FormatDateTime('mm', Date);
+  Mes:= ComboBox1.Text;
+  ADOQueryAniversariantes.Close;
+  ADOQueryAniversariantes.SQL.Clear;
+  ADOQueryAniversariantes.SQL.Add('select * from sind2');
+  ADOQueryAniversariantes.SQL.Add('where extract(month from DTNas) = :Mes;');
+  //Query1.SQL.Add('order by dtnas');
+  ADOQueryAniversariantes.Parameters('Mes') := StrToInt(MES);
+  ADOQueryAniversariantes.Open;
+  // Limpa o Conteudo Existente no ListBox
+  DBGrid1.Columns.Clear;
+  // Posicionamos no Primeiro Registro
+  ADOQueryAniversariantes.First;
+  while not ADOQueryAniversariantes.Eof do
+  begin
+  // Adiciona dados a Coluna ListBox
+  DBGrid1.Columns.Add(ADOQueryAniversariantes.FieldByName('NM_CLI').AsString + ' - ' + ADOQueryAniversariantes.FieldByName('DTNASC_CLI').AsString);
+  ADOQueryAniversariantes.Next;
+  end;
+end;
+
+end.

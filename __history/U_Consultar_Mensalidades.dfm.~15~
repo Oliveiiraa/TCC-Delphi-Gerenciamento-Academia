@@ -1,0 +1,230 @@
+object frm_consultmensa: Tfrm_consultmensa
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Consultar Mensalidades'
+  ClientHeight = 565
+  ClientWidth = 589
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object DBGridConsultaMensa: TDBGrid
+    Left = 0
+    Top = 146
+    Width = 545
+    Height = 248
+    DataSource = DataSourceConsultaMensa
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    OnDrawColumnCell = DBGridConsultaMensaDrawColumnCell
+  end
+  object Edit1: TEdit
+    Left = 16
+    Top = 400
+    Width = 121
+    Height = 21
+    TabOrder = 1
+    Text = 'Edit1'
+    Visible = False
+  end
+  object btn_buscarconsulcli: TButton
+    Left = 264
+    Top = 53
+    Width = 88
+    Height = 28
+    Caption = 'Buscar'
+    TabOrder = 2
+    OnClick = btn_buscarconsulcliClick
+  end
+  object edt_buscacli: TEdit
+    Left = 16
+    Top = 32
+    Width = 225
+    Height = 21
+    TabOrder = 3
+  end
+  object ComboBoxConsultacli: TComboBox
+    Left = 16
+    Top = 72
+    Width = 145
+    Height = 21
+    TabOrder = 4
+    Text = 'Filtrar:'
+    Items.Strings = (
+      'C'#243'digo'
+      'Nome'
+      'Data de Vencimento')
+  end
+  object btn_efetuarpag: TButton
+    Left = 248
+    Top = 103
+    Width = 123
+    Height = 25
+    Caption = 'Efetuar Pagamento'
+    TabOrder = 5
+    OnClick = btn_efetuarpagClick
+  end
+  object ADOQueryConsultaMensa: TADOQuery
+    Active = True
+    Connection = ADOConnectionConsultaMensa
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      
+        'SELECT*FROM TB_CLIENTES,TB_MENSALIDADES WHERE TB_MENSALIDADES.CO' +
+        'D_CLI = TB_CLIENTES.COD_CLI')
+    Left = 80
+    Top = 496
+    object ADOQueryConsultaMensaCOD_CLI: TAutoIncField
+      FieldName = 'COD_CLI'
+      ReadOnly = True
+      Visible = False
+    end
+    object ADOQueryConsultaMensaNM_CLI: TStringField
+      DisplayLabel = 'Nome'
+      DisplayWidth = 19
+      FieldName = 'NM_CLI'
+      Size = 50
+    end
+    object ADOQueryConsultaMensaDTPAG_MSD: TWideStringField
+      DisplayLabel = 'Dia Pago'
+      DisplayWidth = 19
+      FieldName = 'DTPAG_MSD'
+      Size = 10
+    end
+    object ADOQueryConsultaMensaDTVENC_MSD: TWideStringField
+      DisplayLabel = 'Data de Vencimento'
+      DisplayWidth = 24
+      FieldName = 'DTVENC_MSD'
+      Size = 10
+    end
+    object ADOQueryConsultaMensaVL_MSD: TBCDField
+      DisplayLabel = 'Valor'
+      DisplayWidth = 9
+      FieldName = 'VL_MSD'
+      Precision = 19
+    end
+    object ADOQueryConsultaMensaCOD_MSD: TAutoIncField
+      FieldName = 'COD_MSD'
+      ReadOnly = True
+      Visible = False
+    end
+  end
+  object DataSourceConsultaMensa: TDataSource
+    DataSet = ADOQueryConsultaMensa
+    Left = 200
+    Top = 488
+  end
+  object ADOConnectionConsultaMensa: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=TCC;Data Source=(local)'
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 336
+    Top = 488
+  end
+  object ADOStoredProcAlterarSit: TADOStoredProc
+    Connection = ADOConnectionConsultaMensa
+    ProcedureName = 'SP_ADCMENSA;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+        Value = Null
+      end
+      item
+        Name = '@COD'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+        Value = Null
+      end
+      item
+        Name = '@SIT'
+        Attributes = [paNullable]
+        DataType = ftBoolean
+        Value = Null
+      end
+      item
+        Name = '@DATA'
+        Attributes = [paNullable]
+        DataType = ftWideString
+        Size = 10
+        Value = Null
+      end>
+    Left = 272
+    Top = 488
+  end
+  object ADOStoredProcAdicionarMensa: TADOStoredProc
+    Connection = ADOConnectionConsultaMensa
+    ProcedureName = 'SP_CADASMENSA;1'
+    Parameters = <
+      item
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        Direction = pdReturnValue
+        Precision = 10
+        Value = Null
+      end
+      item
+        Name = '@DTPAG_MSD'
+        Attributes = [paNullable]
+        DataType = ftWideString
+        Size = 10
+        Value = Null
+      end
+      item
+        Name = '@DTVENC_MSD'
+        Attributes = [paNullable]
+        DataType = ftWideString
+        Size = 10
+        Value = Null
+      end
+      item
+        Name = '@VL_MSD'
+        Attributes = [paNullable]
+        DataType = ftBCD
+        Precision = 19
+        Value = Null
+      end
+      item
+        Name = '@SIT_MSD'
+        Attributes = [paNullable]
+        DataType = ftBoolean
+        Value = Null
+      end
+      item
+        Name = '@COD_CLI'
+        Attributes = [paNullable]
+        DataType = ftInteger
+        Precision = 10
+        Value = Null
+      end>
+    Left = 8
+    Top = 496
+  end
+  object PopupMenuPagar: TPopupMenu
+    Left = 136
+    Top = 488
+    object Pagar1: TMenuItem
+      Caption = 'Pagar'
+      OnClick = Pagar1Click
+    end
+  end
+end

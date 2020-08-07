@@ -1,0 +1,163 @@
+object frm_consultafunc: Tfrm_consultafunc
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Consultar Funcion'#225'rio'
+  ClientHeight = 679
+  ClientWidth = 868
+  Color = clMenuHighlight
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object edt_buscafunc: TEdit
+    Left = 8
+    Top = 80
+    Width = 393
+    Height = 21
+    TabOrder = 0
+  end
+  object bnt_buscafunc: TButton
+    Left = 696
+    Top = 72
+    Width = 153
+    Height = 29
+    Caption = 'Buscar'
+    TabOrder = 1
+    OnClick = bnt_buscafuncClick
+  end
+  object DBGridconsultafunc: TDBGrid
+    Left = 0
+    Top = 213
+    Width = 868
+    Height = 466
+    Align = alBottom
+    DataSource = DataSourceconsultafunc
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    ReadOnly = True
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+  object bnt_editarfunc: TButton
+    Left = 40
+    Top = 152
+    Width = 161
+    Height = 34
+    Caption = 'Editar'
+    TabOrder = 3
+    OnClick = bnt_editarfuncClick
+  end
+  object ComboBoxConsultafunc: TComboBox
+    Left = 440
+    Top = 80
+    Width = 145
+    Height = 21
+    TabOrder = 4
+    Text = 'Filtrar:'
+    Items.Strings = (
+      'C'#243'digo'
+      'Nome'
+      'RG'
+      'CPF')
+  end
+  object DataSourceconsultafunc: TDataSource
+    DataSet = ADOQueryconsultafunc
+    Left = 328
+    Top = 16
+  end
+  object ADOQueryconsultafunc: TADOQuery
+    Active = True
+    Connection = ADOConnectionconsultafunc
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT*FROM TB_FUNCIONARIOS')
+    Left = 448
+    Top = 16
+    object ADOQueryconsultafuncCOD_FUNC: TAutoIncField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'COD_FUNC'
+      ReadOnly = True
+    end
+    object ADOQueryconsultafuncNM_FUNC: TStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'NM_FUNC'
+      Size = 50
+    end
+    object ADOQueryconsultafuncEND_FUNC: TStringField
+      DisplayLabel = 'Endere'#231'o'
+      FieldName = 'END_FUNC'
+      Size = 50
+    end
+    object ADOQueryconsultafuncCPF_FUNC: TStringField
+      DisplayLabel = 'CPF'
+      FieldName = 'CPF_FUNC'
+      Size = 13
+    end
+    object ADOQueryconsultafuncRG_FUNC: TStringField
+      DisplayLabel = 'RG'
+      FieldName = 'RG_FUNC'
+      Size = 13
+    end
+    object ADOQueryconsultafuncTEL_FUNC: TStringField
+      DisplayLabel = 'Telefone'
+      FieldName = 'TEL_FUNC'
+      Size = 17
+    end
+    object ADOQueryconsultafuncDTNASC_FUNC: TWideStringField
+      DisplayLabel = 'Data de Nascimento'
+      FieldName = 'DTNASC_FUNC'
+      Size = 10
+    end
+    object ADOQueryconsultafuncEML_FUNC: TStringField
+      DisplayLabel = 'E-Mail'
+      FieldName = 'EML_FUNC'
+      Size = 50
+    end
+    object ADOQueryconsultafuncSX_FUNC: TBooleanField
+      DisplayLabel = 'Sexo'
+      FieldName = 'SX_FUNC'
+      OnGetText = ADOQueryconsultafuncSX_FUNCGetText
+    end
+    object ADOQueryconsultafuncSTA_FUNC: TBooleanField
+      DisplayLabel = 'Status'
+      FieldName = 'STA_FUNC'
+      OnGetText = ADOQueryconsultafuncSTA_FUNCGetText
+    end
+    object ADOQueryconsultafuncFT_FUNC: TStringField
+      DisplayLabel = 'Foto'
+      FieldName = 'FT_FUNC'
+      Visible = False
+      Size = 255
+    end
+    object ADOQueryconsultafuncCOD_USU: TIntegerField
+      FieldName = 'COD_USU'
+    end
+  end
+  object ADOStoredProc1: TADOStoredProc
+    ProcedureName = 'sp_excluifunc;1'
+    Parameters = <>
+    Left = 568
+    Top = 8
+  end
+  object ADOConnectionconsultafunc: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Initial Catalog=TCC;Data Source=(local)'
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 664
+    Top = 16
+  end
+end
